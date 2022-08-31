@@ -9,7 +9,7 @@ namespace HumansVsZombies_Backend.Models
     public class Chat
     {
         //PK
-        public int MessageId { get; set; }
+        public int ChatId { get; set; }
         [Required]
         [MaxLength(800, ErrorMessage = "The message is too long")]
         public string Message { get; set; }
