@@ -25,7 +25,6 @@ namespace HumansVsZombies_Backend.Models
         public int KillerId { get; set; }
         [ForeignKey("KillerId")]
         public Player Killer { get; set; }
-       
         public int VictimId { get; set; }
         [ForeignKey("VictimId")]
         public Player Victim { get; set; }
