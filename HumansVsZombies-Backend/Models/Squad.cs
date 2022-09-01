@@ -9,11 +9,10 @@ namespace HumansVsZombies_Backend.Models
     public class Squad
     {
         //PK
-        [Required]
         public int SquadId { get; set; }
         [Required]
         [MaxLength(50, ErrorMessage = "The name is too long")]
-        public string Name { get; set; }
+        public string SquadName { get; set; }
         [Required]
         public bool IsHuman { get; set; }
         //Relationships

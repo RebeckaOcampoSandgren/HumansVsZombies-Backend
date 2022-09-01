@@ -35,7 +35,7 @@ namespace HumansVsZombies_Backend
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "HumansVsZombies_Backend", Version = "v1" });
             });
 
-            services.AddDbContext<HvZDbContet>(
+            services.AddDbContext<HvZDbContext>(
             opt => opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
         }
 

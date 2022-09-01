@@ -9,7 +9,6 @@ namespace HumansVsZombies_Backend.Models
     public class SquadCheckin
     {
         //PK
-        [Required]
         public int SquadCheckinId { get; set; }
         [Required]
         public DateTime StartTime { get; set; }

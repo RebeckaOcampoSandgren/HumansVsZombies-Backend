@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -22,9 +23,11 @@ namespace HumansVsZombies_Backend.Models
         public Game Game { get; set; }
         [Required]
         public int KillerId { get; set; }
+        [ForeignKey("KillerId")]
         public Player Killer { get; set; }
-        [Required]
+       
         public int VictimId { get; set; }
+        [ForeignKey("VictimId")]
         public Player Victim { get; set; }
     }
 }

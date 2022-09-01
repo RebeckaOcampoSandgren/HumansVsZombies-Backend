@@ -25,7 +25,10 @@ namespace HumansVsZombies_Backend.Models
         [Required]
         public int GameId { get; set; }
         public Game Game { get; set; }
-        public virtual ICollection<Kill> Kills { get; set; } 
+        public virtual ICollection<Kill> Kills { get; set; }
+        public virtual ICollection<Kill> Victims { get; set; }
+        public virtual ICollection<Chat> Chats { get; set; }
+
 
     }
 }
