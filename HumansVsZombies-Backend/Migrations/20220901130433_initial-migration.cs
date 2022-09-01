@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace HumansVsZombies_Backend.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class initialmigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -32,7 +32,8 @@ namespace HumansVsZombies_Backend.Migrations
                     UserId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FirstName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
+                    LastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    IsAdmin = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -94,8 +95,8 @@ namespace HumansVsZombies_Backend.Migrations
                     IsHuman = table.Column<bool>(type: "bit", nullable: false),
                     IsPatientZero = table.Column<bool>(type: "bit", nullable: false),
                     BiteCode = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    GameId = table.Column<int>(type: "int", nullable: false)
+                    GameId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -152,50 +153,12 @@ namespace HumansVsZombies_Backend.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Kill",
-                columns: table => new
-                {
-                    KillId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    TimeOfDeath = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Story = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Lat = table.Column<double>(type: "float", nullable: false),
-                    Lng = table.Column<double>(type: "float", nullable: false),
-                    GameId = table.Column<int>(type: "int", nullable: false),
-                    KillerId = table.Column<int>(type: "int", nullable: false),
-                    VictimId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Kill", x => x.KillId);
-                    table.ForeignKey(
-                        name: "FK_Kill_Game_GameId",
-                        column: x => x.GameId,
-                        principalTable: "Game",
-                        principalColumn: "GameId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Kill_Player_KillerId",
-                        column: x => x.KillerId,
-                        principalTable: "Player",
-                        principalColumn: "PlayerId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Kill_Player_VictimId",
-                        column: x => x.VictimId,
-                        principalTable: "Player",
-                        principalColumn: "PlayerId",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "SquadMember",
                 columns: table => new
                 {
                     SquadMemberId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Rank = table.Column<int>(type: "int", nullable: false),
-                    GameId = table.Column<int>(type: "int", nullable: false),
                     SquadId = table.Column<int>(type: "int", nullable: false),
                     PlayerId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -203,17 +166,11 @@ namespace HumansVsZombies_Backend.Migrations
                 {
                     table.PrimaryKey("PK_SquadMember", x => x.SquadMemberId);
                     table.ForeignKey(
-                        name: "FK_SquadMember_Game_GameId",
-                        column: x => x.GameId,
-                        principalTable: "Game",
-                        principalColumn: "GameId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
                         name: "FK_SquadMember_Player_PlayerId",
                         column: x => x.PlayerId,
                         principalTable: "Player",
                         principalColumn: "PlayerId",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_SquadMember_Squad_SquadId",
                         column: x => x.SquadId,
@@ -244,7 +201,7 @@ namespace HumansVsZombies_Backend.Migrations
                         column: x => x.GameId,
                         principalTable: "Game",
                         principalColumn: "GameId",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_SquadCheckin_Squad_SquadId",
                         column: x => x.SquadId,
@@ -273,21 +230,6 @@ namespace HumansVsZombies_Backend.Migrations
                 name: "IX_Chat_SquadId",
                 table: "Chat",
                 column: "SquadId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Kill_GameId",
-                table: "Kill",
-                column: "GameId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Kill_KillerId",
-                table: "Kill",
-                column: "KillerId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Kill_VictimId",
-                table: "Kill",
-                column: "VictimId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Mission_GameId",
@@ -325,11 +267,6 @@ namespace HumansVsZombies_Backend.Migrations
                 column: "SquadMemberId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SquadMember_GameId",
-                table: "SquadMember",
-                column: "GameId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_SquadMember_PlayerId",
                 table: "SquadMember",
                 column: "PlayerId");
@@ -344,9 +281,6 @@ namespace HumansVsZombies_Backend.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Chat");
-
-            migrationBuilder.DropTable(
-                name: "Kill");
 
             migrationBuilder.DropTable(
                 name: "Mission");

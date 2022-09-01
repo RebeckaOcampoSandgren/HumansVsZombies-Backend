@@ -14,17 +14,12 @@ namespace HumansVsZombies_Backend.Models
         [Required]
         public int Rank { get; set; }
         //Relationships
-        [Required]
-        public int GameId { get; set; }
-        public Game Game { get; set; }
-       
-        public int SquadId { get; set; }
         [ForeignKey("SquadId")]
+        public int SquadId { get; set; }
         public Squad Squad { get; set; }
-        public int PlayerId { get; set; }
         [ForeignKey("PlayerId")]
+        public int PlayerId { get; set; }
         public Player Player { get; set; }
-
         public virtual ICollection<SquadCheckin> SquadCheckins { get; set; }
 
 

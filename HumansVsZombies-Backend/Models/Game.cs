@@ -21,7 +21,6 @@ namespace HumansVsZombies_Backend.Models
         public double SeLng { get; set; }
         //relationships one to many
         public virtual ICollection<Chat> Chats { get; set; }
-        public virtual ICollection<SquadCheckin> SquadCheckins { get; set; }
-
+        public virtual ICollection<Squad> Squads { get; set; }
     }
 }
