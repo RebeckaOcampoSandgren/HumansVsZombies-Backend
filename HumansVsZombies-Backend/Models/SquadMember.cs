@@ -21,8 +21,8 @@ namespace HumansVsZombies_Backend.Models
         public int SquadId { get; set; }
         [ForeignKey("SquadId")]
         public Squad Squad { get; set; }
-        [Required]
         public int PlayerId { get; set; }
+        [ForeignKey("PlayerId")]
         public Player Player { get; set; }
 
         public virtual ICollection<SquadCheckin> SquadCheckins { get; set; }

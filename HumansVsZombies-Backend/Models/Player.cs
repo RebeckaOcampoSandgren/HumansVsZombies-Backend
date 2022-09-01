@@ -28,7 +28,7 @@ namespace HumansVsZombies_Backend.Models
         public virtual ICollection<Kill> Kills { get; set; }
         public virtual ICollection<Kill> Victims { get; set; }
         public virtual ICollection<Chat> Chats { get; set; }
-
+        public virtual ICollection<SquadMember> SquadMembers { get; set; }
 
     }
 }

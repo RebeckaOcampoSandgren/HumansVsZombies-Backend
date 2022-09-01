@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace HumansVsZombies_Backend.Migrations
 {
-    public partial class initialmigration : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -18,18 +18,11 @@ namespace HumansVsZombies_Backend.Migrations
                     NwLat = table.Column<double>(type: "float", nullable: false),
                     NwLng = table.Column<double>(type: "float", nullable: false),
                     SeLat = table.Column<double>(type: "float", nullable: false),
-                    SeLng = table.Column<double>(type: "float", nullable: false),
-                    GameId1 = table.Column<int>(type: "int", nullable: true)
+                    SeLng = table.Column<double>(type: "float", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Game", x => x.GameId);
-                    table.ForeignKey(
-                        name: "FK_Game_Game_GameId1",
-                        column: x => x.GameId1,
-                        principalTable: "Game",
-                        principalColumn: "GameId",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -220,7 +213,7 @@ namespace HumansVsZombies_Backend.Migrations
                         column: x => x.PlayerId,
                         principalTable: "Player",
                         principalColumn: "PlayerId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_SquadMember_Squad_SquadId",
                         column: x => x.SquadId,
@@ -251,19 +244,19 @@ namespace HumansVsZombies_Backend.Migrations
                         column: x => x.GameId,
                         principalTable: "Game",
                         principalColumn: "GameId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_SquadCheckin_Squad_SquadId",
                         column: x => x.SquadId,
                         principalTable: "Squad",
                         principalColumn: "SquadId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_SquadCheckin_SquadMember_SquadMemberId",
                         column: x => x.SquadMemberId,
                         principalTable: "SquadMember",
                         principalColumn: "SquadMemberId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -280,11 +273,6 @@ namespace HumansVsZombies_Backend.Migrations
                 name: "IX_Chat_SquadId",
                 table: "Chat",
                 column: "SquadId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Game_GameId1",
-                table: "Game",
-                column: "GameId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Kill_GameId",

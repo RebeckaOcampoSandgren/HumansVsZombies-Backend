@@ -46,6 +46,12 @@ namespace HumansVsZombies_Backend.Data
                 .HasForeignKey(e => e.SquadId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            modelBuilder.Entity<SquadMember>()
+                 .HasOne<Player>(s => s.Player)
+                 .WithMany(sq => sq.SquadMembers)
+                 .HasForeignKey(e => e.PlayerId)
+                 .OnDelete(DeleteBehavior.Restrict);
+
             modelBuilder.Entity<Chat>()
                .HasOne<Player>(p => p.Player)
                .WithMany(pl => pl.Chats)
@@ -56,6 +62,24 @@ namespace HumansVsZombies_Backend.Data
                .HasOne<Squad>(s => s.Squad)
                .WithMany(c => c.Chats)
                .HasForeignKey(e => e.SquadId)
+               .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<SquadCheckin>()
+                .HasOne<Squad>(s => s.Squad)
+                .WithMany(sq => sq.SquadCheckins)
+                .HasForeignKey(e => e.SquadId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<SquadCheckin>()
+                .HasOne<SquadMember>(s => s.SquadMember)
+                .WithMany(sq => sq.SquadCheckins)
+                .HasForeignKey(e => e.SquadMemberId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<SquadCheckin>()
+               .HasOne<Game>(s => s.Game)
+               .WithMany(sq => sq.SquadCheckins)
+               .HasForeignKey(e => e.GameId)
                .OnDelete(DeleteBehavior.Restrict);
         }
 

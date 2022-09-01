@@ -67,9 +67,6 @@ namespace HumansVsZombies_Backend.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("GameId1")
-                        .HasColumnType("int");
-
                     b.Property<string>("GameName")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -92,8 +89,6 @@ namespace HumansVsZombies_Backend.Migrations
                         .HasColumnType("float");
 
                     b.HasKey("GameId");
-
-                    b.HasIndex("GameId1");
 
                     b.ToTable("Game");
                 });
@@ -348,13 +343,6 @@ namespace HumansVsZombies_Backend.Migrations
                     b.Navigation("Squad");
                 });
 
-            modelBuilder.Entity("HumansVsZombies_Backend.Models.Game", b =>
-                {
-                    b.HasOne("HumansVsZombies_Backend.Models.Game", null)
-                        .WithMany("Games")
-                        .HasForeignKey("GameId1");
-                });
-
             modelBuilder.Entity("HumansVsZombies_Backend.Models.Kill", b =>
                 {
                     b.HasOne("HumansVsZombies_Backend.Models.Game", "Game")
@@ -426,21 +414,21 @@ namespace HumansVsZombies_Backend.Migrations
             modelBuilder.Entity("HumansVsZombies_Backend.Models.SquadCheckin", b =>
                 {
                     b.HasOne("HumansVsZombies_Backend.Models.Game", "Game")
-                        .WithMany()
+                        .WithMany("SquadCheckins")
                         .HasForeignKey("GameId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("HumansVsZombies_Backend.Models.Squad", "Squad")
                         .WithMany("SquadCheckins")
                         .HasForeignKey("SquadId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("HumansVsZombies_Backend.Models.SquadMember", "SquadMember")
                         .WithMany("SquadCheckins")
                         .HasForeignKey("SquadMemberId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Game");
@@ -459,9 +447,9 @@ namespace HumansVsZombies_Backend.Migrations
                         .IsRequired();
 
                     b.HasOne("HumansVsZombies_Backend.Models.Player", "Player")
-                        .WithMany()
+                        .WithMany("SquadMembers")
                         .HasForeignKey("PlayerId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("HumansVsZombies_Backend.Models.Squad", "Squad")
@@ -481,7 +469,7 @@ namespace HumansVsZombies_Backend.Migrations
                 {
                     b.Navigation("Chats");
 
-                    b.Navigation("Games");
+                    b.Navigation("SquadCheckins");
                 });
 
             modelBuilder.Entity("HumansVsZombies_Backend.Models.Player", b =>
@@ -489,6 +477,8 @@ namespace HumansVsZombies_Backend.Migrations
                     b.Navigation("Chats");
 
                     b.Navigation("Kills");
+
+                    b.Navigation("SquadMembers");
 
                     b.Navigation("Victims");
                 });
