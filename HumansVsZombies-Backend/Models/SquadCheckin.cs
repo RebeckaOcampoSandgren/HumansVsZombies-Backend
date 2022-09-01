@@ -20,14 +20,14 @@ namespace HumansVsZombies_Backend.Models
         [Required]
         public double Lng { get; set; }
         //Unsure about relationships
-        public int GameId { get; set; }
         [ForeignKey("GameId")]
+        public int GameId { get; set; }
         public Game Game { get; set; }
-        public int SquadId { get; set; }
         [ForeignKey("SquadId")]
+        public int SquadId { get; set; }
         public Squad Squad { get; set; }
-        public int SquadMemberId { get; set; }
         [ForeignKey("SquadMemberId")]
+        public int SquadMemberId { get; set; }
         public SquadMember SquadMember { get; set; }
 
     }
