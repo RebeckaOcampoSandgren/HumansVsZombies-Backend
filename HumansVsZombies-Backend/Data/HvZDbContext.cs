@@ -73,5 +73,9 @@ namespace HumansVsZombies_Backend.Data
             //   .HasForeignKey(e => e.GameId)
             //   .OnDelete(DeleteBehavior.Restrict);
         }
+
+        public DbSet<HumansVsZombies_Backend.Models.Player> Player { get; set; }
+
+        public DbSet<HumansVsZombies_Backend.Models.SquadMember> SquadMember { get; set; }
     }
 }
