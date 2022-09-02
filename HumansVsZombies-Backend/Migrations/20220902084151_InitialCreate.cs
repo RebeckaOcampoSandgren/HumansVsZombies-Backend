@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace HumansVsZombies_Backend.Migrations
 {
-    public partial class initialmigration : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -15,10 +15,10 @@ namespace HumansVsZombies_Backend.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     GameName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     GameState = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    NwLat = table.Column<double>(type: "float", nullable: false),
-                    NwLng = table.Column<double>(type: "float", nullable: false),
-                    SeLat = table.Column<double>(type: "float", nullable: false),
-                    SeLng = table.Column<double>(type: "float", nullable: false)
+                    NwLat = table.Column<double>(type: "float", nullable: true),
+                    NwLng = table.Column<double>(type: "float", nullable: true),
+                    SeLat = table.Column<double>(type: "float", nullable: true),
+                    SeLng = table.Column<double>(type: "float", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -50,8 +50,8 @@ namespace HumansVsZombies_Backend.Migrations
                     IsHumanVisible = table.Column<bool>(type: "bit", nullable: false),
                     IsZombieVisible = table.Column<bool>(type: "bit", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    StartTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EndTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    StartTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    EndTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                     GameId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -127,7 +127,7 @@ namespace HumansVsZombies_Backend.Migrations
                     ChatTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     GameId = table.Column<int>(type: "int", nullable: false),
                     PlayerId = table.Column<int>(type: "int", nullable: false),
-                    SquadId = table.Column<int>(type: "int", nullable: false)
+                    SquadId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -269,7 +269,8 @@ namespace HumansVsZombies_Backend.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_SquadMember_PlayerId",
                 table: "SquadMember",
-                column: "PlayerId");
+                column: "PlayerId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_SquadMember_SquadId",

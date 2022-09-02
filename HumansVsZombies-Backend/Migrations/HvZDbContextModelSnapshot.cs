@@ -46,7 +46,7 @@ namespace HumansVsZombies_Backend.Migrations
                     b.Property<int>("PlayerId")
                         .HasColumnType("int");
 
-                    b.Property<int>("SquadId")
+                    b.Property<int?>("SquadId")
                         .HasColumnType("int");
 
                     b.HasKey("ChatId");
@@ -76,16 +76,16 @@ namespace HumansVsZombies_Backend.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("NwLat")
+                    b.Property<double?>("NwLat")
                         .HasColumnType("float");
 
-                    b.Property<double>("NwLng")
+                    b.Property<double?>("NwLng")
                         .HasColumnType("float");
 
-                    b.Property<double>("SeLat")
+                    b.Property<double?>("SeLat")
                         .HasColumnType("float");
 
-                    b.Property<double>("SeLng")
+                    b.Property<double?>("SeLng")
                         .HasColumnType("float");
 
                     b.HasKey("GameId");
@@ -103,7 +103,7 @@ namespace HumansVsZombies_Backend.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("EndTime")
+                    b.Property<DateTime?>("EndTime")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("GameId")
@@ -120,7 +120,7 @@ namespace HumansVsZombies_Backend.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<DateTime>("StartTime")
+                    b.Property<DateTime?>("StartTime")
                         .HasColumnType("datetime2");
 
                     b.HasKey("MissionId");
@@ -243,7 +243,8 @@ namespace HumansVsZombies_Backend.Migrations
 
                     b.HasKey("SquadMemberId");
 
-                    b.HasIndex("PlayerId");
+                    b.HasIndex("PlayerId")
+                        .IsUnique();
 
                     b.HasIndex("SquadId");
 
@@ -292,8 +293,7 @@ namespace HumansVsZombies_Backend.Migrations
                     b.HasOne("HumansVsZombies_Backend.Models.Squad", "Squad")
                         .WithMany("Chats")
                         .HasForeignKey("SquadId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Game");
 
@@ -305,7 +305,7 @@ namespace HumansVsZombies_Backend.Migrations
             modelBuilder.Entity("HumansVsZombies_Backend.Models.Mission", b =>
                 {
                     b.HasOne("HumansVsZombies_Backend.Models.Game", "Game")
-                        .WithMany()
+                        .WithMany("Missions")
                         .HasForeignKey("GameId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -373,8 +373,8 @@ namespace HumansVsZombies_Backend.Migrations
             modelBuilder.Entity("HumansVsZombies_Backend.Models.SquadMember", b =>
                 {
                     b.HasOne("HumansVsZombies_Backend.Models.Player", "Player")
-                        .WithMany()
-                        .HasForeignKey("PlayerId")
+                        .WithOne("SquadMember")
+                        .HasForeignKey("HumansVsZombies_Backend.Models.SquadMember", "PlayerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -393,12 +393,16 @@ namespace HumansVsZombies_Backend.Migrations
                 {
                     b.Navigation("Chats");
 
+                    b.Navigation("Missions");
+
                     b.Navigation("Squads");
                 });
 
             modelBuilder.Entity("HumansVsZombies_Backend.Models.Player", b =>
                 {
                     b.Navigation("Chats");
+
+                    b.Navigation("SquadMember");
                 });
 
             modelBuilder.Entity("HumansVsZombies_Backend.Models.Squad", b =>
