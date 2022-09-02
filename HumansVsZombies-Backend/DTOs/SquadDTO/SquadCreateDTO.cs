@@ -7,5 +7,8 @@ namespace HumansVsZombies_Backend.DTOs.SquadDTO
 {
     public class SquadCreateDTO
     {
+        public string SquadName { get; set; }
+        public bool IsHuman { get; set; }
+        public int GameId { get; set; }
     }
 }
