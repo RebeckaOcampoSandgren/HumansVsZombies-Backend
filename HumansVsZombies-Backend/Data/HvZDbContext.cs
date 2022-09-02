@@ -21,6 +21,9 @@ namespace HumansVsZombies_Backend.Data
         public DbSet<Game> Game { get; set; }
         public DbSet<Mission> Mission { get; set; }
         public DbSet<Chat> Chat { get; set; }
+        public DbSet<Player> Player { get; set; }
+
+        public DbSet<SquadMember> SquadMember { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -30,13 +33,6 @@ namespace HumansVsZombies_Backend.Data
                 .WithMany(sq => sq.SquadMembers)
                 .HasForeignKey(e => e.SquadId)
                 .OnDelete(DeleteBehavior.Restrict);
-
-            ////Relationship one-to-many SquadMember-player
-            //modelBuilder.Entity<SquadMember>()
-            //     .HasOne<Player>(s => s.Player)
-            //     .WithMany(sq => sq.SquadMembers)
-            //     .HasForeignKey(e => e.PlayerId)
-            //     .OnDelete(DeleteBehavior.Restrict);
 
             ////Relationship one-to-many Chat-player
             modelBuilder.Entity<Chat>()
@@ -66,16 +62,17 @@ namespace HumansVsZombies_Backend.Data
                 .HasForeignKey(e => e.SquadMemberId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            //Relationship one-to-many SquadChechin-Game
-            //modelBuilder.Entity<SquadCheckin>()
-            //   .HasOne<Game>(s => s.Game)
-            //   .WithMany(sq => sq.SquadCheckins)
-            //   .HasForeignKey(e => e.GameId)
-            //   .OnDelete(DeleteBehavior.Restrict);
+            //Seed data
+            modelBuilder.Entity<Game>().HasData(SeedHelper.GetGameSeeds());
+            modelBuilder.Entity<User>().HasData(SeedHelper.GetUserSeeds());
+            modelBuilder.Entity<Player>().HasData(SeedHelper.GetPlayerSeeds());
+            modelBuilder.Entity<Squad>().HasData(SeedHelper.GetSquadSeeds());
+            modelBuilder.Entity<SquadMember>().HasData(SeedHelper.GetSquadMemberSeeds());
+            modelBuilder.Entity<SquadCheckin>().HasData(SeedHelper.GetSquadCheckinSeeds());
+            modelBuilder.Entity<Mission>().HasData(SeedHelper.GetMissionSeeds());
+            modelBuilder.Entity<Chat>().HasData(SeedHelper.GetChatSeeds());
+
         }
 
-        public DbSet<HumansVsZombies_Backend.Models.Player> Player { get; set; }
-
-        public DbSet<HumansVsZombies_Backend.Models.SquadMember> SquadMember { get; set; }
     }
 }

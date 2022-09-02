@@ -199,7 +199,7 @@ namespace HumansVsZombies_Backend.Data
             };
             return seedSquadMember;
         }
-        public static IEnumerable<SquadCheckin> GetSquadCheckingSeeds()
+        public static IEnumerable<SquadCheckin> GetSquadCheckinSeeds()
         {
             IEnumerable<SquadCheckin> seedSquadCheckin = new List<SquadCheckin>()
             {
@@ -251,8 +251,8 @@ namespace HumansVsZombies_Backend.Data
                     IsHumanVisible = true,
                     IsZombieVisible = false,
                     Description = "Try your best to collect five types of medicine. Good Luck!",
-                    StartTime = new DateTime(2022, 11, 31, 17, 32, 20),
-                    EndTime = new DateTime(2022, 11, 31, 18, 32, 20),
+                    StartTime = new DateTime(2022, 11, 30, 17, 32, 20),
+                    EndTime = new DateTime(2022, 11, 30, 18, 32, 20),
                     GameId = 1
                 },
                 new Mission
@@ -262,8 +262,8 @@ namespace HumansVsZombies_Backend.Data
                     IsHumanVisible = false,
                     IsZombieVisible = true,
                     Description = "Try your best to collect five types of powerpotion. Good Luck!",
-                    StartTime = new DateTime(2022, 11, 31, 14, 32, 20),
-                    EndTime = new DateTime(2022, 11, 31, 15, 32, 20),
+                    StartTime = new DateTime(2022, 11, 30, 14, 32, 20),
+                    EndTime = new DateTime(2022, 11, 30, 15, 32, 20),
                     GameId = 1
                 },
                 new Mission
@@ -273,8 +273,8 @@ namespace HumansVsZombies_Backend.Data
                     IsHumanVisible = true,
                     IsZombieVisible = false,
                     Description = "Try your best to collect as many weapons as possible. Good Luck!",
-                    StartTime = new DateTime(2022, 11, 31, 20, 32, 20),
-                    EndTime = new DateTime(2022, 11, 31, 21, 32, 20),
+                    StartTime = new DateTime(2022, 11, 30, 20, 32, 20),
+                    EndTime = new DateTime(2022, 11, 30, 21, 32, 20),
                     GameId = 2
                 },
             };

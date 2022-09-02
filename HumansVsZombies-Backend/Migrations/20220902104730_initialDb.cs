@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace HumansVsZombies_Backend.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class initialDb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -215,6 +215,94 @@ namespace HumansVsZombies_Backend.Migrations
                         principalColumn: "SquadMemberId",
                         onDelete: ReferentialAction.Restrict);
                 });
+
+            migrationBuilder.InsertData(
+                table: "Game",
+                columns: new[] { "GameId", "GameName", "GameState", "NwLat", "NwLng", "SeLat", "SeLng" },
+                values: new object[,]
+                {
+                    { 1, "Left for Dead", "Registration", -26.66386, 25.283757999999999, -16.66686, 17.96686 },
+                    { 2, "Walking Dead", "In progress", -16.66386, 15.283758000000001, -6.6668599999999998, 7.9668599999999996 },
+                    { 3, "Days Gone", "Complete", -20.263860000000001, 21.283358, -13.66686, 12.99686 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "User",
+                columns: new[] { "UserId", "FirstName", "IsAdmin", "LastName" },
+                values: new object[,]
+                {
+                    { 1, "Rebecka", false, "Ocampo Sandgren" },
+                    { 2, "Fadi", true, "Akkaoui" },
+                    { 3, "Negin", true, "Bakhtiarirad" },
+                    { 4, "Betiel", false, "Yohannes" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Mission",
+                columns: new[] { "MissionId", "Description", "EndTime", "GameId", "IsHumanVisible", "IsZombieVisible", "MissionName", "StartTime" },
+                values: new object[,]
+                {
+                    { 1, "Try your best to collect five types of medicine. Good Luck!", new DateTime(2022, 11, 30, 18, 32, 20, 0, DateTimeKind.Unspecified), 1, true, false, "Collect medicine", new DateTime(2022, 11, 30, 17, 32, 20, 0, DateTimeKind.Unspecified) },
+                    { 2, "Try your best to collect five types of powerpotion. Good Luck!", new DateTime(2022, 11, 30, 15, 32, 20, 0, DateTimeKind.Unspecified), 1, false, true, "Collect powerpotion", new DateTime(2022, 11, 30, 14, 32, 20, 0, DateTimeKind.Unspecified) },
+                    { 3, "Try your best to collect as many weapons as possible. Good Luck!", new DateTime(2022, 11, 30, 21, 32, 20, 0, DateTimeKind.Unspecified), 2, true, false, "Collect weapons", new DateTime(2022, 11, 30, 20, 32, 20, 0, DateTimeKind.Unspecified) }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Player",
+                columns: new[] { "PlayerId", "BiteCode", "GameId", "IsHuman", "IsPatientZero", "UserId" },
+                values: new object[,]
+                {
+                    { 1, 10805, 1, true, false, 1 },
+                    { 2, 2925, 1, false, true, 2 },
+                    { 3, 278, 2, false, false, 3 },
+                    { 4, 21988, 3, true, false, 4 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Squad",
+                columns: new[] { "SquadId", "GameId", "IsHuman", "SquadName" },
+                values: new object[,]
+                {
+                    { 1, 1, true, "Best squad ever" },
+                    { 3, 1, false, "Gang gang" },
+                    { 2, 2, false, "Better than best squad" },
+                    { 4, 3, true, "The beasts" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Chat",
+                columns: new[] { "ChatId", "ChatTime", "GameId", "IsHumanGlobal", "IsZombieGlobal", "Message", "PlayerId", "SquadId" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(2022, 9, 2, 12, 47, 30, 193, DateTimeKind.Local).AddTicks(2919), 1, false, false, "glhf", 1, null },
+                    { 2, new DateTime(2022, 9, 2, 12, 47, 30, 193, DateTimeKind.Local).AddTicks(3863), 1, true, false, "gg", 1, 4 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "SquadMember",
+                columns: new[] { "SquadMemberId", "PlayerId", "Rank", "SquadId" },
+                values: new object[,]
+                {
+                    { 4, 1, 10, 4 },
+                    { 2, 2, 5, 2 },
+                    { 1, 3, 4, 1 },
+                    { 3, 4, 1, 3 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "SquadCheckin",
+                columns: new[] { "SquadCheckinId", "EndTime", "GameId", "Lat", "Lng", "SquadId", "SquadMemberId", "StartTime" },
+                values: new object[] { 2, new DateTime(2022, 9, 2, 12, 57, 30, 192, DateTimeKind.Local).AddTicks(2730), 2, -26.66386, 25.283757999999999, 2, 2, new DateTime(2022, 9, 2, 12, 47, 30, 192, DateTimeKind.Local).AddTicks(2720) });
+
+            migrationBuilder.InsertData(
+                table: "SquadCheckin",
+                columns: new[] { "SquadCheckinId", "EndTime", "GameId", "Lat", "Lng", "SquadId", "SquadMemberId", "StartTime" },
+                values: new object[] { 3, new DateTime(2022, 9, 2, 12, 57, 30, 192, DateTimeKind.Local).AddTicks(2737), 2, -26.66386, 25.283757999999999, 2, 2, new DateTime(2022, 9, 2, 12, 47, 30, 192, DateTimeKind.Local).AddTicks(2734) });
+
+            migrationBuilder.InsertData(
+                table: "SquadCheckin",
+                columns: new[] { "SquadCheckinId", "EndTime", "GameId", "Lat", "Lng", "SquadId", "SquadMemberId", "StartTime" },
+                values: new object[] { 1, new DateTime(2022, 9, 2, 12, 57, 30, 192, DateTimeKind.Local).AddTicks(1629), 1, -26.66386, 25.283757999999999, 1, 1, new DateTime(2022, 9, 2, 12, 47, 30, 188, DateTimeKind.Local).AddTicks(8704) });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Chat_GameId",
