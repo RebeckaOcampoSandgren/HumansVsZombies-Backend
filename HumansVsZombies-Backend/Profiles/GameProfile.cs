@@ -1,0 +1,32 @@
+﻿using AutoMapper;
+using HumansVsZombies_Backend.DTOs.GameDTO;
+using HumansVsZombies_Backend.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace HumansVsZombies_Backend.Profiles
+{
+    public class GameProfile : Profile
+    {
+        public GameProfile()
+        {
+            //Game<->GameReadDTO
+            CreateMap<Game, GameReadDTO>()
+                .ForMember(g => g.Chats, opt => opt
+                .MapFrom(g => g.Chats.Select(x => x.ChatId).ToArray()))
+                .ForMember(g => g.Squads, opt => opt
+                .MapFrom(g => g.Squads.Select(x => x.SquadId).ToArray()))
+                .ForMember(g => g.Missions, opt => opt
+                .MapFrom(g => g.Missions.Select(x => x.MissionId).ToArray()))
+                .ReverseMap();
+
+            //Game<->GameCreateDTO
+            CreateMap<Game, GameCreateDTO>();
+
+            //Game<->GameUpdateDTO
+            CreateMap<Game, GameUpdateDTO>();
+        }
+    }
+}
