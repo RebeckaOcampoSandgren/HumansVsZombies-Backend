@@ -26,6 +26,7 @@ namespace HumansVsZombies_Backend.Models
         [ForeignKey("UserId")]
         public int UserId { get; set; }
         public User User { get; set; }
+        public SquadMember SquadMember { get; set; }
         public virtual ICollection<Chat> Chats { get; set; }
 
     }

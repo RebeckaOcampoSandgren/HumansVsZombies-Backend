@@ -30,7 +30,7 @@ namespace HumansVsZombies_Backend.Models
         public int PlayerId { get; set; }
         public Player Player { get; set; }
         [ForeignKey("SquadId")]
-        public int SquadId { get; set; }
+        public int? SquadId { get; set; }
         public Squad Squad { get; set; }
 
     }
