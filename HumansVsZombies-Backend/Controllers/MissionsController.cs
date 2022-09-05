@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using HumansVsZombies_Backend.Data;
 using HumansVsZombies_Backend.Models;
 using System.Net.Mime;
+using HumansVsZombies_Backend.DTOs.MissionDTO;
 
 namespace HumansVsZombies_Backend.Controllers
 {
@@ -27,14 +28,14 @@ namespace HumansVsZombies_Backend.Controllers
 
         // GET: api/Missions
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Mission>>> GetMission()
+        public async Task<ActionResult<IEnumerable<MissionReadDTO>>> GetMission()
         {
             return await _context.Mission.ToListAsync();
         }
 
         // GET: api/Missions/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Mission>> GetMission(int id)
+        public async Task<ActionResult<MissionReadDTO>> GetMission(int id)
         {
             var mission = await _context.Mission.FindAsync(id);
 
@@ -49,14 +50,14 @@ namespace HumansVsZombies_Backend.Controllers
         // PUT: api/Missions/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutMission(int id, Mission mission)
+        public async Task<IActionResult> PutMission(int id, MissionUpdateDTO missionDto)
         {
-            if (id != mission.MissionId)
+            if (id != missionDto.MissionId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(mission).State = EntityState.Modified;
+            _context.Entry(missionDto).State = EntityState.Modified;
 
             try
             {
@@ -78,11 +79,10 @@ namespace HumansVsZombies_Backend.Controllers
         }
 
         // POST: api/Missions
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Mission>> PostMission(Mission mission)
+        public async Task<ActionResult<Mission>> PostMission(MissionCreateDTO missionDto)
         {
-            _context.Mission.Add(mission);
+            _context.Mission.Add(missionDto);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetMission", new { id = mission.MissionId }, mission);

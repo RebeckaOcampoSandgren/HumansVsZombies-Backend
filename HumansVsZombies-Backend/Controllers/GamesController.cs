@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using HumansVsZombies_Backend.Data;
 using HumansVsZombies_Backend.Models;
 using System.Net.Mime;
+using HumansVsZombies_Backend.DTOs.GameDTO;
 
 namespace HumansVsZombies_Backend.Controllers
 {
@@ -27,14 +28,14 @@ namespace HumansVsZombies_Backend.Controllers
 
         // GET: api/Games
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Game>>> GetGame()
+        public async Task<ActionResult<IEnumerable<GameReadDTO>>> GetGame()
         {
             return await _context.Game.ToListAsync();
         }
 
         // GET: api/Games/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Game>> GetGame(int id)
+        public async Task<ActionResult<GameReadDTO>> GetGame(int id)
         {
             var game = await _context.Game.FindAsync(id);
 
@@ -47,16 +48,15 @@ namespace HumansVsZombies_Backend.Controllers
         }
 
         // PUT: api/Games/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutGame(int id, Game game)
+        public async Task<IActionResult> PutGame(int id, GameUpdateDTO gameDto)
         {
-            if (id != game.GameId)
+            if (id != gameDto.GameId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(game).State = EntityState.Modified;
+            _context.Entry(gameDto).State = EntityState.Modified;
 
             try
             {
@@ -78,14 +78,13 @@ namespace HumansVsZombies_Backend.Controllers
         }
 
         // POST: api/Games
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Game>> PostGame(Game game)
+        public async Task<ActionResult<Game>> PostGame(GameCreateDTO gameDto)
         {
-            _context.Game.Add(game);
+            _context.Game.Add(gameDto);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetGame", new { id = game.GameId }, game);
+            return CreatedAtAction("GetGame", new { id = gameDto.GameId }, game);
         }
 
         // DELETE: api/Games/5

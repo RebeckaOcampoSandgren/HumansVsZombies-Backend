@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using HumansVsZombies_Backend.Data;
 using HumansVsZombies_Backend.Models;
 using System.Net.Mime;
+using HumansVsZombies_Backend.DTOs.ChatDTO;
 
 namespace HumansVsZombies_Backend.Controllers
 {
@@ -27,14 +28,14 @@ namespace HumansVsZombies_Backend.Controllers
 
         // GET: api/Chats
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Chat>>> GetChat()
+        public async Task<ActionResult<IEnumerable<ChatReadDTO>>> GetChat()
         {
             return await _context.Chat.ToListAsync();
         }
 
         // GET: api/Chats/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Chat>> GetChat(int id)
+        public async Task<ActionResult<ChatReadDTO>> GetChat(int id)
         {
             var chat = await _context.Chat.FindAsync(id);
 
@@ -47,16 +48,15 @@ namespace HumansVsZombies_Backend.Controllers
         }
 
         // PUT: api/Chats/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutChat(int id, Chat chat)
+        public async Task<IActionResult> PutChat(int id, ChatUpdateDTO chatDto)
         {
-            if (id != chat.ChatId)
+            if (id != chatDto.ChatId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(chat).State = EntityState.Modified;
+            _context.Entry(chatDto).State = EntityState.Modified;
 
             try
             {
@@ -78,11 +78,10 @@ namespace HumansVsZombies_Backend.Controllers
         }
 
         // POST: api/Chats
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Chat>> PostChat(Chat chat)
+        public async Task<ActionResult<Chat>> PostChat(ChatCreateDTO chatDto)
         {
-            _context.Chat.Add(chat);
+            _context.Chat.Add(chatDto);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetChat", new { id = chat.ChatId }, chat);
