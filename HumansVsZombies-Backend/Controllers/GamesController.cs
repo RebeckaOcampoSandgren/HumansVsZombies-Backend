@@ -9,6 +9,8 @@ using HumansVsZombies_Backend.Data;
 using HumansVsZombies_Backend.Models;
 using System.Net.Mime;
 using HumansVsZombies_Backend.DTOs.GameDTO;
+using HumansVsZombies_Backend.Services;
+using AutoMapper;
 
 namespace HumansVsZombies_Backend.Controllers
 {
@@ -19,32 +21,34 @@ namespace HumansVsZombies_Backend.Controllers
     [ApiConventionType(typeof(DefaultApiConventions))]
     public class GamesController : ControllerBase
     {
-        private readonly HvZDbContext _context;
+        private readonly IGameService _gameService;
+        private readonly IMapper _mapper;
 
-        public GamesController(HvZDbContext context)
+        public GamesController(IGameService gameService, IMapper mapper)
         {
-            _context = context;
+            _gameService = gameService;
+            _mapper = mapper;
         }
 
         // GET: api/Games
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<GameReadDTO>>> GetGame()
+        public async Task<ActionResult<IEnumerable<GameReadDTO>>> GetAllGames()
         {
-            return await _context.Game.ToListAsync();
+            return _mapper.Map<List<GameReadDTO>>(await _gameService.GetAllGamesAsync());
         }
 
         // GET: api/Games/5
         [HttpGet("{id}")]
         public async Task<ActionResult<GameReadDTO>> GetGame(int id)
         {
-            var game = await _context.Game.FindAsync(id);
+            var game = await _gameService.GetGameAsync(id);
 
             if (game == null)
             {
                 return NotFound();
             }
 
-            return game;
+            return _mapper.Map<GameReadDTO>(game);
         }
 
         // PUT: api/Games/5
@@ -55,24 +59,13 @@ namespace HumansVsZombies_Backend.Controllers
             {
                 return BadRequest();
             }
-
-            _context.Entry(gameDto).State = EntityState.Modified;
-
-            try
+            if (!_gameService.GameExists(id))
             {
-                await _context.SaveChangesAsync();
+                return NotFound();
             }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!GameExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+
+            Game domainGame = _mapper.Map<Game>(gameDto);
+            await _gameService.UpdateGameAsync(domainGame);
 
             return NoContent();
         }
@@ -81,31 +74,28 @@ namespace HumansVsZombies_Backend.Controllers
         [HttpPost]
         public async Task<ActionResult<Game>> PostGame(GameCreateDTO gameDto)
         {
-            _context.Game.Add(gameDto);
-            await _context.SaveChangesAsync();
+            Game domainGame = _mapper.Map<Game>(gameDto);
+            domainGame = await _gameService.AddGameAsync(domainGame);
 
-            return CreatedAtAction("GetGame", new { id = gameDto.GameId }, game);
+            return CreatedAtAction("GetGame", new { id = domainGame.GameId }, _mapper.Map<GameReadDTO>(domainGame));
         }
 
         // DELETE: api/Games/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteGame(int id)
         {
-            var game = await _context.Game.FindAsync(id);
-            if (game == null)
+            if (!_gameService.GameExists(id))
             {
                 return NotFound();
             }
 
-            _context.Game.Remove(game);
-            await _context.SaveChangesAsync();
-
+            await _gameService.DeleteGameAsync(id);
             return NoContent();
         }
 
-        private bool GameExists(int id)
-        {
-            return _context.Game.Any(e => e.GameId == id);
-        }
+        //private bool GameExists(int id)
+        //{
+        //    return _context.Game.Any(e => e.GameId == id);
+        //}
     }
 }

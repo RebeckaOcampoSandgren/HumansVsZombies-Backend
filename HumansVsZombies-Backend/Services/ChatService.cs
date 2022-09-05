@@ -1,5 +1,6 @@
 ﻿using HumansVsZombies_Backend.Data;
 using HumansVsZombies_Backend.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,34 +17,40 @@ namespace HumansVsZombies_Backend.Services
             _context = context;
         }
 
-        public Task<Chat> AddChatAsync(Chat chat)
+        public async Task<Chat> AddChatAsync(Chat chat)
         {
-            throw new NotImplementedException();
+            _context.Chat.Add(chat);
+            await _context.SaveChangesAsync();
+            return chat;
         }
 
         public bool ChatExists(int id)
         {
-            throw new NotImplementedException();
+            return _context.Chat.Any(e => e.ChatId == id);
         }
 
-        public Task DeleteChatAsync(int id)
+        public async Task DeleteChatAsync(int id)
         {
-            throw new NotImplementedException();
+            var chat = await _context.Chat.FindAsync(id);
+            _context.Chat.Remove(chat);
+            await _context.SaveChangesAsync();
+
         }
 
-        public Task<IEnumerable<Chat>> GetAllChatsAsync()
+        public async Task<IEnumerable<Chat>> GetAllChatsAsync()
         {
-            throw new NotImplementedException();
+            return await _context.Chat.ToListAsync();
         }
 
-        public Task<Chat> GetChatAsync(int id)
+        public async Task<Chat> GetChatAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _context.Chat.FindAsync(id);
         }
 
-        public Task UpdateChatAsync(Chat chat)
+        public async Task UpdateChatAsync(Chat chat)
         {
-            throw new NotImplementedException();
+            _context.Entry(chat).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
         }
     }
 }

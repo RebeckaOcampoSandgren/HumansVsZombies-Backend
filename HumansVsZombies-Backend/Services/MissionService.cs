@@ -1,5 +1,6 @@
 ﻿using HumansVsZombies_Backend.Data;
 using HumansVsZombies_Backend.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,34 +17,39 @@ namespace HumansVsZombies_Backend.Services
             _context = context;
         }
 
-        public Task<Mission> AddChatAsync(Mission mission)
+        public async Task<Mission> AddMissionAsync(Mission mission)
         {
-            throw new NotImplementedException();
+            _context.Mission.Add(mission);
+            await _context.SaveChangesAsync();
+            return mission;
         }
 
-        public Task DeleteMissionAsync(int id)
+        public async Task DeleteMissionAsync(int id)
         {
-            throw new NotImplementedException();
+            var character = await _context.Mission.FindAsync(id);
+            _context.Mission.Remove(character);
+            await _context.SaveChangesAsync();
         }
 
-        public Task<IEnumerable<Mission>> GetAllMissionsAsync()
+        public async Task<IEnumerable<Mission>> GetAllMissionsAsync()
         {
-            throw new NotImplementedException();
+            return await _context.Mission.ToListAsync();
         }
 
-        public Task<Mission> GetMissionAsync(int id)
+        public async Task<Mission> GetMissionAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _context.Mission.FindAsync(id);
         }
 
         public bool MissionExists(int id)
         {
-            throw new NotImplementedException();
+            return _context.Mission.Any(e => e.MissionId == id);
         }
 
-        public Task UpdateMissionAsync(Mission mission)
+        public async Task UpdateMissionAsync(Mission mission)
         {
-            throw new NotImplementedException();
+            _context.Entry(mission).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
         }
     }
 }
