@@ -7,11 +7,16 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using HumansVsZombies_Backend.Data;
 using HumansVsZombies_Backend.Models;
+using System.Net.Mime;
+using HumansVsZombies_Backend.DTOs.PlayerDTO;
 
 namespace HumansVsZombies_Backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
+    [ApiConventionType(typeof(DefaultApiConventions))]
     public class PlayersController : ControllerBase
     {
         private readonly HvZDbContext _context;
@@ -23,14 +28,14 @@ namespace HumansVsZombies_Backend.Controllers
 
         // GET: api/Players
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Player>>> GetPlayer()
+        public async Task<ActionResult<IEnumerable<PlayerReadDTO>>> GetPlayer()
         {
             return await _context.Player.ToListAsync();
         }
 
         // GET: api/Players/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Player>> GetPlayer(int id)
+        public async Task<ActionResult<PlayerReadDTO>> GetPlayer(int id)
         {
             var player = await _context.Player.FindAsync(id);
 
@@ -43,11 +48,10 @@ namespace HumansVsZombies_Backend.Controllers
         }
 
         // PUT: api/Players/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutPlayer(int id, Player player)
+        public async Task<IActionResult> PutPlayer(int id, PlayerUpdateDTO dtoPlayer)
         {
-            if (id != player.PlayerId)
+            if (id != dtoPlayer.PlayerId)
             {
                 return BadRequest();
             }
@@ -74,9 +78,8 @@ namespace HumansVsZombies_Backend.Controllers
         }
 
         // POST: api/Players
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Player>> PostPlayer(Player player)
+        public async Task<ActionResult<Player>> PostPlayer(PlayerCreateDTO playerDto)
         {
             _context.Player.Add(player);
             await _context.SaveChangesAsync();

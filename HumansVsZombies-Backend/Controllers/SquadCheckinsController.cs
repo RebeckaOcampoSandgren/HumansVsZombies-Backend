@@ -7,11 +7,16 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using HumansVsZombies_Backend.Data;
 using HumansVsZombies_Backend.Models;
+using System.Net.Mime;
+using HumansVsZombies_Backend.DTOs.SquadCheckinDTO;
 
 namespace HumansVsZombies_Backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
+    [ApiConventionType(typeof(DefaultApiConventions))]
     public class SquadCheckinsController : ControllerBase
     {
         private readonly HvZDbContext _context;
@@ -23,14 +28,14 @@ namespace HumansVsZombies_Backend.Controllers
 
         // GET: api/SquadCheckins
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<SquadCheckin>>> GetSquadCheckin()
+        public async Task<ActionResult<IEnumerable<SquadCheckinReadDTO>>> GetSquadCheckin()
         {
             return await _context.SquadCheckin.ToListAsync();
         }
 
         // GET: api/SquadCheckins/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<SquadCheckin>> GetSquadCheckin(int id)
+        public async Task<ActionResult<SquadCheckinReadDTO>> GetSquadCheckin(int id)
         {
             var squadCheckin = await _context.SquadCheckin.FindAsync(id);
 
@@ -43,11 +48,10 @@ namespace HumansVsZombies_Backend.Controllers
         }
 
         // PUT: api/SquadCheckins/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutSquadCheckin(int id, SquadCheckin squadCheckin)
+        public async Task<IActionResult> PutSquadCheckin(int id, SquadCheckinUpdateDTO squadCheckinDto)
         {
-            if (id != squadCheckin.SquadCheckinId)
+            if (id != squadCheckinDto.SquadCheckinId)
             {
                 return BadRequest();
             }
@@ -74,9 +78,8 @@ namespace HumansVsZombies_Backend.Controllers
         }
 
         // POST: api/SquadCheckins
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<SquadCheckin>> PostSquadCheckin(SquadCheckin squadCheckin)
+        public async Task<ActionResult<SquadCheckin>> PostSquadCheckin(SquadCheckinCreateDTO dtoSquadCheckin)
         {
             _context.SquadCheckin.Add(squadCheckin);
             await _context.SaveChangesAsync();

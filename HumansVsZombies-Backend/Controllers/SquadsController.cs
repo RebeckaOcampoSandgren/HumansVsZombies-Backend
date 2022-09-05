@@ -7,11 +7,16 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using HumansVsZombies_Backend.Data;
 using HumansVsZombies_Backend.Models;
+using System.Net.Mime;
+using HumansVsZombies_Backend.DTOs.SquadDTO;
 
 namespace HumansVsZombies_Backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
+    [ApiConventionType(typeof(DefaultApiConventions))]
     public class SquadsController : ControllerBase
     {
         private readonly HvZDbContext _context;
@@ -23,14 +28,14 @@ namespace HumansVsZombies_Backend.Controllers
 
         // GET: api/Squads
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Squad>>> GetSquad()
+        public async Task<ActionResult<IEnumerable<SquadReadDTO>>> GetSquad()
         {
             return await _context.Squad.ToListAsync();
         }
 
         // GET: api/Squads/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Squad>> GetSquad(int id)
+        public async Task<ActionResult<SquadReadDTO>> GetSquad(int id)
         {
             var squad = await _context.Squad.FindAsync(id);
 
@@ -43,11 +48,10 @@ namespace HumansVsZombies_Backend.Controllers
         }
 
         // PUT: api/Squads/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutSquad(int id, Squad squad)
+        public async Task<IActionResult> PutSquad(int id, SquadUpdateDTO squadDto)
         {
-            if (id != squad.SquadId)
+            if (id != squadDto.SquadId)
             {
                 return BadRequest();
             }
@@ -74,9 +78,8 @@ namespace HumansVsZombies_Backend.Controllers
         }
 
         // POST: api/Squads
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Squad>> PostSquad(Squad squad)
+        public async Task<ActionResult<Squad>> PostSquad(SquadCreateDTO dtoSquad)
         {
             _context.Squad.Add(squad);
             await _context.SaveChangesAsync();
