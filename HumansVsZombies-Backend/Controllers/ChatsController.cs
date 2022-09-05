@@ -9,6 +9,8 @@ using HumansVsZombies_Backend.Data;
 using HumansVsZombies_Backend.Models;
 using System.Net.Mime;
 using HumansVsZombies_Backend.DTOs.ChatDTO;
+using HumansVsZombies_Backend.Services;
+using AutoMapper;
 
 namespace HumansVsZombies_Backend.Controllers
 {
@@ -19,32 +21,34 @@ namespace HumansVsZombies_Backend.Controllers
     [ApiConventionType(typeof(DefaultApiConventions))]
     public class ChatsController : ControllerBase
     {
-        private readonly HvZDbContext _context;
+        private readonly IChatService _chatService;
+        private readonly IMapper _mapper;
 
-        public ChatsController(HvZDbContext context)
+        public ChatsController(IChatService chatService, IMapper mapper)
         {
-            _context = context;
+            _chatService = chatService;
+            _mapper = mapper;
         }
 
         // GET: api/Chats
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ChatReadDTO>>> GetChat()
+        public async Task<ActionResult<IEnumerable<ChatReadDTO>>> GetAllChats()
         {
-            return await _context.Chat.ToListAsync();
+            return _mapper.Map<List<ChatReadDTO>>(await _chatService.GetAllChatsAsync());
         }
 
         // GET: api/Chats/5
         [HttpGet("{id}")]
         public async Task<ActionResult<ChatReadDTO>> GetChat(int id)
         {
-            var chat = await _context.Chat.FindAsync(id);
+            var chat = await _chatService.GetChatAsync(id);
 
             if (chat == null)
             {
                 return NotFound();
             }
 
-            return chat;
+            return _mapper.Map<ChatReadDTO>(chat);
         }
 
         // PUT: api/Chats/5
@@ -55,24 +59,13 @@ namespace HumansVsZombies_Backend.Controllers
             {
                 return BadRequest();
             }
-
-            _context.Entry(chatDto).State = EntityState.Modified;
-
-            try
+            if (!_chatService.ChatExists(id))
             {
-                await _context.SaveChangesAsync();
+                return NotFound();
             }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ChatExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+
+            Chat domainChat = _mapper.Map<Chat>(chatDto);
+            await _chatService.UpdateChatAsync(domainChat);
 
             return NoContent();
         }
@@ -81,31 +74,28 @@ namespace HumansVsZombies_Backend.Controllers
         [HttpPost]
         public async Task<ActionResult<Chat>> PostChat(ChatCreateDTO chatDto)
         {
-            _context.Chat.Add(chatDto);
-            await _context.SaveChangesAsync();
+            Chat domainChat = _mapper.Map<Chat>(chatDto);
+            domainChat = await _chatService.AddChatAsync(domainChat);
 
-            return CreatedAtAction("GetChat", new { id = chat.ChatId }, chat);
+            return CreatedAtAction("GetChat", new { id = domainChat.ChatId }, _mapper.Map<ChatReadDTO>(domainChat));
         }
 
         // DELETE: api/Chats/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteChat(int id)
         {
-            var chat = await _context.Chat.FindAsync(id);
-            if (chat == null)
+            if (!_chatService.ChatExists(id))
             {
                 return NotFound();
             }
 
-            _context.Chat.Remove(chat);
-            await _context.SaveChangesAsync();
-
+            await _chatService.DeleteChatAsync(id);
             return NoContent();
         }
 
-        private bool ChatExists(int id)
-        {
-            return _context.Chat.Any(e => e.ChatId == id);
-        }
+        //private bool ChatExists(int id)
+        //{
+        //    return _context.Chat.Any(e => e.ChatId == id);
+        //}
     }
 }

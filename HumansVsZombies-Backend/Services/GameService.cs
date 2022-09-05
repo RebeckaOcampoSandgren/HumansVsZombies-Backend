@@ -1,5 +1,6 @@
 ﻿using HumansVsZombies_Backend.Data;
 using HumansVsZombies_Backend.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,34 +17,39 @@ namespace HumansVsZombies_Backend.Services
             _context = context;
         }
 
-        public Task<Game> AddGameAsync(Game game)
+        public async Task<Game> AddGameAsync(Game game)
         {
-            throw new NotImplementedException();
+            _context.Game.Add(game);
+            await _context.SaveChangesAsync();
+            return game;
         }
 
-        public Task DeleteGameAsync(int id)
+        public async Task DeleteGameAsync(int id)
         {
-            throw new NotImplementedException();
+            var game = await _context.Game.FindAsync(id);
+            _context.Game.Remove(game);
+            await _context.SaveChangesAsync();
         }
 
         public bool GameExists(int id)
         {
-            throw new NotImplementedException();
+            return _context.Game.Any(e => e.GameId == id);
         }
 
-        public Task<IEnumerable<Game>> GetAllGamesAsync()
+        public async Task<IEnumerable<Game>> GetAllGamesAsync()
         {
-            throw new NotImplementedException();
+            return await _context.Game.Include(gc => gc.Chats).Include(gs => gs.Squads).Include(gm => gm.Missions).ToListAsync();
         }
 
-        public Task<Game> GetGameAsync(int id)
+        public async Task<Game> GetGameAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _context.Game.Include(gc => gc.Chats).Include(gs => gs.Squads).Include(gm => gm.Missions).FirstOrDefaultAsync(gi => gi.GameId == id);
         }
 
-        public Task UpdateGameAsync(Game game)
+        public async Task UpdateGameAsync(Game game)
         {
-            throw new NotImplementedException();
+            _context.Entry(game).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
         }
     }
 }

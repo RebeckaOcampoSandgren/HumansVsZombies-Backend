@@ -1,5 +1,6 @@
 ﻿using HumansVsZombies_Backend.Data;
 using HumansVsZombies_Backend.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,34 +17,39 @@ namespace HumansVsZombies_Backend.Services
             _context = context;
         }
 
-        public Task<Player> AddPlayerAsync(Player player)
+        public async Task<Player> AddPlayerAsync(Player player)
         {
-            throw new NotImplementedException();
+            _context.Player.Add(player);
+            await _context.SaveChangesAsync();
+            return player;
         }
 
-        public Task DeletePlayerAsync(int id)
+        public async Task DeletePlayerAsync(int id)
         {
-            throw new NotImplementedException();
+            var player = await _context.Player.FindAsync(id);
+            _context.Player.Remove(player);
+            await _context.SaveChangesAsync();
         }
 
-        public Task<IEnumerable<Player>> GetAllPlayersAsync()
+        public async Task<IEnumerable<Player>> GetAllPlayersAsync()
         {
-            throw new NotImplementedException();
+            return await _context.Player.Include(pc => pc.Chats).ToListAsync();
         }
 
-        public Task<Player> GetPlayerAsync(int id)
+        public async Task<Player> GetPlayerAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _context.Player.Include(pc => pc.Chats).FirstOrDefaultAsync(pi => pi.PlayerId == id);
         }
 
         public bool PlayerExists(int id)
         {
-            throw new NotImplementedException();
+            return _context.Player.Any(e => e.PlayerId == id);
         }
 
-        public Task UpdatePlayerAsync(Player player)
+        public async Task UpdatePlayerAsync(Player player)
         {
-            throw new NotImplementedException();
+            _context.Entry(player).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
         }
     }
 }
