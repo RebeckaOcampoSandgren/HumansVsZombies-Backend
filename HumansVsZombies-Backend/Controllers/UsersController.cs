@@ -7,102 +7,96 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using HumansVsZombies_Backend.Data;
 using HumansVsZombies_Backend.Models;
+using System.Net.Mime;
+using HumansVsZombies_Backend.DTOs.UserDTO;
+using HumansVsZombies_Backend.Services;
+using AutoMapper;
 
 namespace HumansVsZombies_Backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
+    [ApiConventionType(typeof(DefaultApiConventions))]
     public class UsersController : ControllerBase
     {
         private readonly HvZDbContext _context;
+        private readonly IUserService _userService;
+        private readonly IMapper _mapper;
 
-        public UsersController(HvZDbContext context)
+        public UsersController(HvZDbContext context, IMapper mapper, IUserService userService)
         {
             _context = context;
+            _userService = userService;
+            _mapper = mapper;
         }
 
         // GET: api/Users
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetUser()
+        public async Task<ActionResult<IEnumerable<UserReadDTO>>> GetAllUsers()
         {
-            return await _context.User.ToListAsync();
+            return _mapper.Map<List<UserReadDTO>>(await _userService.GetAllUsersAsync());
         }
 
         // GET: api/Users/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUser(int id)
+        public async Task<ActionResult<UserReadDTO>> GetUser(int id)
         {
-            var user = await _context.User.FindAsync(id);
+            var user = await _userService.GetUserAsync(id);
 
             if (user == null)
             {
                 return NotFound();
             }
 
-            return user;
+            return _mapper.Map<UserReadDTO>(user);
         }
 
         // PUT: api/Users/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser(int id, User user)
+        public async Task<IActionResult> PutUser(int id, UserUpdateDTO userDto)
         {
-            if (id != user.UserId)
+            if (id != userDto.UserId)
             {
                 return BadRequest();
             }
-
-            _context.Entry(user).State = EntityState.Modified;
-
-            try
+            if (!_userService.UserExists(id))
             {
-                await _context.SaveChangesAsync();
+                return NotFound();
             }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!UserExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+
+            User domainUser = _mapper.Map<User>(userDto);
+            await _userService.UpdateUserAsync(domainUser);
 
             return NoContent();
         }
 
         // POST: api/Users
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<User>> PostUser(User user)
+        public async Task<ActionResult<User>> PostUser(UserCreateDTO dtoUser)
         {
-            _context.User.Add(user);
-            await _context.SaveChangesAsync();
+            User domainUser = _mapper.Map<User>(dtoUser);
+            domainUser = await _userService.AddUserAsync(domainUser);
 
-            return CreatedAtAction("GetUser", new { id = user.UserId }, user);
+            return CreatedAtAction("GetUser", new { id = domainUser.UserId }, _mapper.Map<UserReadDTO>(domainUser));
         }
 
         // DELETE: api/Users/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(int id)
         {
-            var user = await _context.User.FindAsync(id);
-            if (user == null)
+            if (!_userService.UserExists(id))
             {
                 return NotFound();
             }
-
-            _context.User.Remove(user);
-            await _context.SaveChangesAsync();
-
+            await _userService.DeleteUserAsync(id);
             return NoContent();
         }
 
-        private bool UserExists(int id)
+        /*private bool UserExists(int id)
         {
             return _context.User.Any(e => e.UserId == id);
-        }
+        }*/
     }
 }

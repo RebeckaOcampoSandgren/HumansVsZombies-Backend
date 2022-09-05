@@ -7,102 +7,97 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using HumansVsZombies_Backend.Data;
 using HumansVsZombies_Backend.Models;
+using System.Net.Mime;
+using HumansVsZombies_Backend.DTOs.PlayerDTO;
+using HumansVsZombies_Backend.Services;
+using AutoMapper;
 
 namespace HumansVsZombies_Backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
+    [ApiConventionType(typeof(DefaultApiConventions))]
     public class PlayersController : ControllerBase
     {
-        private readonly HvZDbContext _context;
+        private readonly IPlayerService _playerService;
+        private readonly IMapper _mapper;
 
-        public PlayersController(HvZDbContext context)
+        public PlayersController(IPlayerService playerService, IMapper mapper)
         {
-            _context = context;
+            _playerService = playerService;
+            _mapper = mapper;
         }
 
         // GET: api/Players
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Player>>> GetPlayer()
+        public async Task<ActionResult<IEnumerable<PlayerReadDTO>>> GetAllPlayers()
         {
-            return await _context.Player.ToListAsync();
+            return _mapper.Map<List<PlayerReadDTO>>(await _playerService.GetAllPlayersAsync());
         }
 
         // GET: api/Players/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Player>> GetPlayer(int id)
+        public async Task<ActionResult<PlayerReadDTO>> GetPlayer(int id)
         {
-            var player = await _context.Player.FindAsync(id);
+            var player = await _playerService.GetPlayerAsync(id);
 
             if (player == null)
             {
                 return NotFound();
             }
 
-            return player;
+            return _mapper.Map<PlayerReadDTO>(player);
         }
 
         // PUT: api/Players/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutPlayer(int id, Player player)
+        public async Task<IActionResult> PutPlayer(int id, PlayerUpdateDTO dtoPlayer)
         {
-            if (id != player.PlayerId)
+            if (id != dtoPlayer.PlayerId)
             {
                 return BadRequest();
             }
-
-            _context.Entry(player).State = EntityState.Modified;
-
-            try
+            if (!_playerService.PlayerExists(id))
             {
-                await _context.SaveChangesAsync();
+                return NotFound();
             }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!PlayerExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+
+            Player domainPlayer = _mapper.Map<Player>(dtoPlayer);
+            await _playerService.UpdatePlayerAsync(domainPlayer);
 
             return NoContent();
         }
 
         // POST: api/Players
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Player>> PostPlayer(Player player)
+        public async Task<ActionResult<Player>> PostPlayer(PlayerCreateDTO playerDto)
         {
-            _context.Player.Add(player);
-            await _context.SaveChangesAsync();
+            Player domainPlayer = _mapper.Map<Player>(playerDto);
+            domainPlayer = await _playerService.AddPlayerAsync(domainPlayer);
 
-            return CreatedAtAction("GetPlayer", new { id = player.PlayerId }, player);
+
+            return CreatedAtAction("GetPlayer", new { id = domainPlayer.PlayerId }, _mapper.Map<PlayerReadDTO>(domainPlayer));
         }
 
         // DELETE: api/Players/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePlayer(int id)
         {
-            var player = await _context.Player.FindAsync(id);
-            if (player == null)
+            if (!_playerService.PlayerExists(id))
             {
                 return NotFound();
             }
 
-            _context.Player.Remove(player);
-            await _context.SaveChangesAsync();
-
+            await _playerService.DeletePlayerAsync(id);
             return NoContent();
+
         }
 
-        private bool PlayerExists(int id)
-        {
-            return _context.Player.Any(e => e.PlayerId == id);
-        }
+        //private bool PlayerExists(int id)
+        //{
+        //    return _context.Player.Any(e => e.PlayerId == id);
+        //}
     }
 }

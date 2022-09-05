@@ -1,4 +1,5 @@
 using HumansVsZombies_Backend.Data;
+using HumansVsZombies_Backend.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -30,6 +31,15 @@ namespace HumansVsZombies_Backend
         {
 
             services.AddControllers();
+            services.AddAutoMapper(typeof(Startup));
+            services.AddScoped(typeof(IChatService), typeof(ChatService));
+            services.AddScoped(typeof(IGameService), typeof(GameService));
+            services.AddScoped(typeof(IPlayerService), typeof(PlayerService));
+            services.AddScoped(typeof(IMissionService), typeof(MissionService));
+            services.AddScoped(typeof(ISquadService), typeof(SquadService));
+            services.AddScoped(typeof(ISquadMemberService), typeof(SquadMemberService));
+            services.AddScoped(typeof(ISquadCheckinService), typeof(SquadCheckinService));
+            services.AddScoped(typeof(IUserService), typeof(UserService));
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "HumansVsZombies_Backend", Version = "v1" });

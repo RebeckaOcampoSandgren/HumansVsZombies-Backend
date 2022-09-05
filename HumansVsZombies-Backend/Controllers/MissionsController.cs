@@ -7,102 +7,96 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using HumansVsZombies_Backend.Data;
 using HumansVsZombies_Backend.Models;
+using System.Net.Mime;
+using HumansVsZombies_Backend.DTOs.MissionDTO;
+using HumansVsZombies_Backend.Services;
+using AutoMapper;
 
 namespace HumansVsZombies_Backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
+    [ApiConventionType(typeof(DefaultApiConventions))]
     public class MissionsController : ControllerBase
     {
-        private readonly HvZDbContext _context;
+        private readonly IMissionService _missionService;
+        private readonly IMapper _mapper;
 
-        public MissionsController(HvZDbContext context)
+        public MissionsController(IMissionService missionService, IMapper mapper)
         {
-            _context = context;
+            _missionService = missionService;
+            _mapper = mapper;
         }
 
         // GET: api/Missions
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Mission>>> GetMission()
+        public async Task<ActionResult<IEnumerable<MissionReadDTO>>> GetAllMissions()
         {
-            return await _context.Mission.ToListAsync();
+            return _mapper.Map<List<MissionReadDTO>>(await _missionService.GetAllMissionsAsync());
         }
 
         // GET: api/Missions/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Mission>> GetMission(int id)
+        public async Task<ActionResult<MissionReadDTO>> GetMission(int id)
         {
-            var mission = await _context.Mission.FindAsync(id);
+            var mission = await _missionService.GetMissionAsync(id);
 
             if (mission == null)
             {
                 return NotFound();
             }
 
-            return mission;
+            return _mapper.Map<MissionReadDTO>(mission);
         }
 
         // PUT: api/Missions/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutMission(int id, Mission mission)
+        public async Task<IActionResult> PutMission(int id, MissionUpdateDTO missionDto)
         {
-            if (id != mission.MissionId)
+            if (id != missionDto.MissionId)
             {
                 return BadRequest();
             }
-
-            _context.Entry(mission).State = EntityState.Modified;
-
-            try
+            if (!_missionService.MissionExists(id))
             {
-                await _context.SaveChangesAsync();
+                return NotFound();
             }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!MissionExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+
+            Mission domainMission = _mapper.Map<Mission>(missionDto);
+            await _missionService.UpdateMissionAsync(domainMission);
 
             return NoContent();
         }
 
         // POST: api/Missions
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Mission>> PostMission(Mission mission)
+        public async Task<ActionResult<Mission>> PostMission(MissionCreateDTO missionDto)
         {
-            _context.Mission.Add(mission);
-            await _context.SaveChangesAsync();
+            Mission domainMission = _mapper.Map<Mission>(missionDto);
+            domainMission = await _missionService.AddMissionAsync(domainMission);
 
-            return CreatedAtAction("GetMission", new { id = mission.MissionId }, mission);
+            return CreatedAtAction("GetMission", new { id = domainMission.MissionId }, _mapper.Map<MissionReadDTO>(domainMission));
+
         }
 
         // DELETE: api/Missions/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteMission(int id)
         {
-            var mission = await _context.Mission.FindAsync(id);
-            if (mission == null)
+            if (!_missionService.MissionExists(id))
             {
                 return NotFound();
             }
 
-            _context.Mission.Remove(mission);
-            await _context.SaveChangesAsync();
-
+            await _missionService.DeleteMissionAsync(id);
             return NoContent();
         }
 
-        private bool MissionExists(int id)
-        {
-            return _context.Mission.Any(e => e.MissionId == id);
-        }
+        //private bool MissionExists(int id)
+        //{
+        //    return _context.Mission.Any(e => e.MissionId == id);
+        //}
     }
 }
