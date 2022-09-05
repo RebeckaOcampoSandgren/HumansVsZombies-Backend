@@ -22,10 +22,12 @@ namespace HumansVsZombies_Backend.Controllers
     public class GamesController : ControllerBase
     {
         private readonly IGameService _gameService;
+        private readonly HvZDbContext _context;
         private readonly IMapper _mapper;
 
-        public GamesController(IGameService gameService, IMapper mapper)
+        public GamesController(HvZDbContext context, IGameService gameService, IMapper mapper)
         {
+            _context = context;
             _gameService = gameService;
             _mapper = mapper;
         }
@@ -92,6 +94,38 @@ namespace HumansVsZombies_Backend.Controllers
             await _gameService.DeleteGameAsync(id);
             return NoContent();
         }
+
+        //reporting
+        [HttpGet("{id}/humanChats")]
+        public async Task<ActionResult<IEnumerable<Chat>>> GetAllHumanChatsInGame(int id)
+        {
+
+            var chats = await _context.Game.Where(g => g.GameId == id).SelectMany(c => c.Chats).Where(c => c.IsHumanGlobal == true).ToListAsync();
+
+            if (chats == null)
+            {
+                return NotFound();
+            }
+
+            return chats;
+        }
+
+        //reporting
+        [HttpGet("{id}/ZombieChats")]
+        public async Task<ActionResult<IEnumerable<Chat>>> GetAllZombieChatsInGame(int id)
+        {
+
+            var chats = await _context.Game.Where(g => g.GameId == id).SelectMany(c => c.Chats).Where(c => c.IsZombieGlobal == true).ToListAsync();
+
+            if (chats == null)
+            {
+                return NotFound();
+            }
+
+            return chats;
+        }
+
+
 
         //private bool GameExists(int id)
         //{
