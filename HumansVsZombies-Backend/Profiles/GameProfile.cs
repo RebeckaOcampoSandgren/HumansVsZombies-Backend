@@ -14,10 +14,13 @@ namespace HumansVsZombies_Backend.Profiles
         {
             //Game<->GameReadDTO
             CreateMap<Game, GameReadDTO>()
+                // Turning related chats into int Arrays
                 .ForMember(g => g.Chats, opt => opt
                 .MapFrom(g => g.Chats.Select(x => x.ChatId).ToArray()))
+                // Turning related squads into int Arrays
                 .ForMember(g => g.Squads, opt => opt
                 .MapFrom(g => g.Squads.Select(x => x.SquadId).ToArray()))
+                // Turning related missions into int Arrays
                 .ForMember(g => g.Missions, opt => opt
                 .MapFrom(g => g.Missions.Select(x => x.MissionId).ToArray()))
                 .ReverseMap();

@@ -18,6 +18,7 @@ namespace HumansVsZombies_Backend.Profiles
                .MapFrom(p => p.SquadId))
                .ForMember(p => p.Player, opt => opt
                .MapFrom(s => s.PlayerId))
+               // Turning related Squadcheckins into int Arrays
                .ForMember(s => s.SquadCheckins, opt => opt
                .MapFrom(s => s.SquadCheckins.Select(x => x.SquadCheckinId).ToArray()))
                .ReverseMap();

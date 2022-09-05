@@ -18,6 +18,7 @@ namespace HumansVsZombies_Backend.Profiles
                .MapFrom(p => p.GameId))
                .ForMember(u => u.User, opt => opt
                .MapFrom(u => u.UserId))
+               // Turning related chats into int Arrays
                .ForMember(c => c.Chats, opt => opt
                .MapFrom(c => c.Chats.Select(x => x.ChatId).ToArray()))
                .ReverseMap();
