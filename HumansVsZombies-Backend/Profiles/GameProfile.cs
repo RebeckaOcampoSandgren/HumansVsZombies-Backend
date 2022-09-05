@@ -26,10 +26,10 @@ namespace HumansVsZombies_Backend.Profiles
                 .ReverseMap();
 
             //Game<->GameCreateDTO
-            CreateMap<Game, GameCreateDTO>();
+            CreateMap<Game, GameCreateDTO>().ReverseMap();
 
             //Game<->GameUpdateDTO
-            CreateMap<Game, GameUpdateDTO>();
+            CreateMap<Game, GameUpdateDTO>().ReverseMap();
         }
     }
 }

@@ -17,13 +17,9 @@ namespace HumansVsZombies_Backend.Models
         public bool IsPatientZero { get; set; }
         [Required]
         public int BiteCode { get; set; }
-
         //Not sure about the relationship
-        [Required]
-        [ForeignKey("GameId")]
         public int GameId { get; set; }
         public Game Game { get; set; }
-        [ForeignKey("UserId")]
         public int UserId { get; set; }
         public User User { get; set; }
         public SquadMember SquadMember { get; set; }
