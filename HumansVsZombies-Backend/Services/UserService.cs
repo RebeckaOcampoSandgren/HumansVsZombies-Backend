@@ -1,5 +1,6 @@
 ﻿using HumansVsZombies_Backend.Data;
 using HumansVsZombies_Backend.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,34 +17,39 @@ namespace HumansVsZombies_Backend.Services
             _context = context;
         }
 
-        public Task<User> AddUserAsync(User user)
+        public async Task<User> AddUserAsync(User user)
         {
-            throw new NotImplementedException();
+            _context.User.Add(user);
+            await _context.SaveChangesAsync();
+            return user;
         }
 
-        public Task DeleteUserAsync(int id)
+        public async Task DeleteUserAsync(int id)
         {
-            throw new NotImplementedException();
+            var user = await _context.User.FindAsync(id);
+            _context.User.Remove(user);
+            await _context.SaveChangesAsync();
         }
 
-        public Task<IEnumerable<User>> GetAllUsersAsync()
+        public async Task<IEnumerable<User>> GetAllUsersAsync()
         {
-            throw new NotImplementedException();
+            return await _context.User.Include(up => up.Players).ToListAsync();
         }
 
-        public Task<User> GetUserAsync(int id)
+        public async Task<User> GetUserAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _context.User.Include(up => up.Players).FirstOrDefaultAsync(u => u.UserId == id);
         }
 
-        public Task UpdateUserAsync(User user)
+        public async Task UpdateUserAsync(User user)
         {
-            throw new NotImplementedException();
+            _context.Entry(user).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
         }
 
         public bool UserExists(int id)
         {
-            throw new NotImplementedException();
+            return _context.User.Any(e => e.UserId == id);
         }
     }
 }

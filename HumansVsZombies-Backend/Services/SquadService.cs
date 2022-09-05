@@ -1,5 +1,6 @@
 ﻿using HumansVsZombies_Backend.Data;
 using HumansVsZombies_Backend.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,34 +17,40 @@ namespace HumansVsZombies_Backend.Services
             _context = context;
         }
 
-        public Task<Squad> AddSquadAsync(Squad squad)
+        public async Task<Squad> AddSquadAsync(Squad squad)
         {
-            throw new NotImplementedException();
+            _context.Squad.Add(squad);
+            await _context.SaveChangesAsync();
+            return squad;
         }
 
-        public Task DeleteSquadAsync(int id)
+        public async Task DeleteSquadAsync(int id)
         {
-            throw new NotImplementedException();
+            var squad = await _context.Squad.FindAsync(id);
+            _context.Squad.Remove(squad);
+            await _context.SaveChangesAsync();
         }
 
-        public Task<IEnumerable<Squad>> GetAllSquadsAsync()
+        public async Task<IEnumerable<Squad>> GetAllSquadsAsync()
         {
-            throw new NotImplementedException();
+            return await _context.Squad.Include(ssm => ssm.SquadMembers).Include(ssc => ssc.SquadCheckins).Include(sc => sc.Chats).ToListAsync();
         }
 
-        public Task<Squad> GetSquadAsync(int id)
+        public async Task<Squad> GetSquadAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _context.Squad.Include(ssm => ssm.SquadMembers).Include(ssc => ssc.SquadCheckins).Include(sc => sc.Chats).FirstOrDefaultAsync(s => s.SquadId == id);
+
         }
 
         public bool SquadExists(int id)
         {
-            throw new NotImplementedException();
+            return _context.Squad.Any(e => e.SquadId == id);
         }
 
-        public Task UpdateSquadAsync(Squad squad)
+        public async Task UpdateSquadAsync(Squad squad)
         {
-            throw new NotImplementedException();
+            _context.Entry(squad).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
         }
     }
 }

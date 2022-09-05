@@ -9,6 +9,8 @@ using HumansVsZombies_Backend.Data;
 using HumansVsZombies_Backend.Models;
 using System.Net.Mime;
 using HumansVsZombies_Backend.DTOs.SquadDTO;
+using HumansVsZombies_Backend.Services;
+using AutoMapper;
 
 namespace HumansVsZombies_Backend.Controllers
 {
@@ -20,31 +22,35 @@ namespace HumansVsZombies_Backend.Controllers
     public class SquadsController : ControllerBase
     {
         private readonly HvZDbContext _context;
+        private readonly ISquadService _squadService;
+        private readonly IMapper _mapper;
 
-        public SquadsController(HvZDbContext context)
+        public SquadsController(HvZDbContext context, IMapper mapper, ISquadService squadService)
         {
             _context = context;
+            _squadService = squadService;
+            _mapper = mapper;
         }
 
         // GET: api/Squads
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<SquadReadDTO>>> GetSquad()
+        public async Task<ActionResult<IEnumerable<SquadReadDTO>>> GetAllSquads()
         {
-            return await _context.Squad.ToListAsync();
+            return _mapper.Map<List<SquadReadDTO>>(await _squadService.GetAllSquadsAsync());
         }
 
         // GET: api/Squads/5
         [HttpGet("{id}")]
         public async Task<ActionResult<SquadReadDTO>> GetSquad(int id)
         {
-            var squad = await _context.Squad.FindAsync(id);
+            var squad = await _squadService.GetSquadAsync(id);
 
             if (squad == null)
             {
                 return NotFound();
             }
 
-            return squad;
+            return _mapper.Map<SquadReadDTO>(squad);
         }
 
         // PUT: api/Squads/5
@@ -55,24 +61,13 @@ namespace HumansVsZombies_Backend.Controllers
             {
                 return BadRequest();
             }
-
-            _context.Entry(squad).State = EntityState.Modified;
-
-            try
+            if (!_squadService.SquadExists(id))
             {
-                await _context.SaveChangesAsync();
+                return NotFound();
             }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!SquadExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+
+            Squad domainSquad = _mapper.Map<Squad>(squadDto);
+            await _squadService.UpdateSquadAsync(domainSquad);
 
             return NoContent();
         }
@@ -81,31 +76,27 @@ namespace HumansVsZombies_Backend.Controllers
         [HttpPost]
         public async Task<ActionResult<Squad>> PostSquad(SquadCreateDTO dtoSquad)
         {
-            _context.Squad.Add(squad);
-            await _context.SaveChangesAsync();
+            Squad domainSquad = _mapper.Map<Squad>(dtoSquad);
+            domainSquad = await _squadService.AddSquadAsync(domainSquad);
 
-            return CreatedAtAction("GetSquad", new { id = squad.SquadId }, squad);
+            return CreatedAtAction("GetSquad", new { id = domainSquad.SquadId }, _mapper.Map<SquadReadDTO>(domainSquad));
         }
 
         // DELETE: api/Squads/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteSquad(int id)
         {
-            var squad = await _context.Squad.FindAsync(id);
-            if (squad == null)
+            if (!_squadService.SquadExists(id))
             {
                 return NotFound();
             }
-
-            _context.Squad.Remove(squad);
-            await _context.SaveChangesAsync();
-
+            await _squadService.DeleteSquadAsync(id);
             return NoContent();
         }
 
-        private bool SquadExists(int id)
+        /*private bool SquadExists(int id)
         {
             return _context.Squad.Any(e => e.SquadId == id);
-        }
+        }*/
     }
 }

@@ -1,5 +1,6 @@
 ﻿using HumansVsZombies_Backend.Data;
 using HumansVsZombies_Backend.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,34 +17,40 @@ namespace HumansVsZombies_Backend.Services
             _context = context;
         }
 
-        public Task<SquadCheckin> AddSquadCheckinAsync(SquadCheckin squadCheckin)
+        public async Task<SquadCheckin> AddSquadCheckinAsync(SquadCheckin squadCheckin)
         {
-            throw new NotImplementedException();
+            _context.SquadCheckin.Add(squadCheckin);
+            await _context.SaveChangesAsync();
+            return squadCheckin;
         }
 
-        public Task DeleteSquadCheckinAsync(int id)
+        public async Task DeleteSquadCheckinAsync(int id)
         {
-            throw new NotImplementedException();
+            var squadCheckin = await _context.SquadCheckin.FindAsync(id);
+            _context.SquadCheckin.Remove(squadCheckin);
+            await _context.SaveChangesAsync();
         }
 
-        public Task<IEnumerable<SquadCheckin>> GetAllSquadCheckinsAsync()
+        public async Task<IEnumerable<SquadCheckin>> GetAllSquadCheckinsAsync()
         {
-            throw new NotImplementedException();
+            return await _context.SquadCheckin.ToListAsync();
         }
 
-        public Task<SquadCheckin> GetSquadCheckinAsync(int id)
+        public async Task<SquadCheckin> GetSquadCheckinAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _context.SquadCheckin.FirstOrDefaultAsync(s => s.SquadCheckinId == id);
         }
 
         public bool SquadCheckinExists(int id)
         {
-            throw new NotImplementedException();
+            return _context.SquadCheckin.Any(e => e.SquadCheckinId == id);
+
         }
 
-        public Task UpdateSquadCheckinAsync(SquadCheckin squadCheckin)
+        public async Task UpdateSquadCheckinAsync(SquadCheckin squadCheckin)
         {
-            throw new NotImplementedException();
+            _context.Entry(squadCheckin).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
         }
     }
 }
