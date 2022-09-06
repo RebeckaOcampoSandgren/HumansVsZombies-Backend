@@ -11,6 +11,8 @@ using System.Net.Mime;
 using HumansVsZombies_Backend.DTOs.SquadDTO;
 using HumansVsZombies_Backend.Services;
 using AutoMapper;
+using HumansVsZombies_Backend.DTOs.ChatDTO;
+using HumansVsZombies_Backend.DTOs.SquadCheckinDTO;
 
 namespace HumansVsZombies_Backend.Controllers
 {
@@ -113,6 +115,20 @@ namespace HumansVsZombies_Backend.Controllers
             }
 
             return _mapper.Map<SquadReadDTO>(squad);
+        }
+
+        //reporting method to get all chats for a specific squad
+        [HttpGet("{id}/chats")]
+        public async Task<ActionResult<IEnumerable<ChatReadDTO>>> GetAllChatsInSquad(int id)
+        {
+            return _mapper.Map<List<ChatReadDTO>>(await _squadService.GetAllChatsInSquadAsync(id));
+        }
+
+        //reporting method to get all checkin-markers for a specific squad
+        [HttpGet("{id}/checkins")]
+        public async Task<ActionResult<IEnumerable<SquadCheckinReadDTO>>> GetAllCheckinsInSquad(int id)
+        {
+            return _mapper.Map<List<SquadCheckinReadDTO>>(await _squadService.GetAllCheckinsInSquadAsync(id));
         }
 
         /*private bool SquadExists(int id)

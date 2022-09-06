@@ -62,5 +62,15 @@ namespace HumansVsZombies_Backend.Services
             _context.Entry(squad).State = EntityState.Modified;
             await _context.SaveChangesAsync();
         }
+
+        public async Task<IEnumerable<Chat>> GetAllChatsInSquadAsync(int id)
+        {
+            return await _context.Squad.Where(s => s.SquadId == id).SelectMany(s => s.Chats).ToListAsync();
+        }
+
+        public async Task<IEnumerable<SquadCheckin>> GetAllCheckinsInSquadAsync(int id)
+        {
+            return await _context.Squad.Where(s => s.SquadId == id).SelectMany(s => s.SquadCheckins).ToListAsync();
+        }
     }
 }
