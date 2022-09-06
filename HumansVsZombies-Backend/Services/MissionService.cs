@@ -36,9 +36,19 @@ namespace HumansVsZombies_Backend.Services
             return await _context.Mission.ToListAsync();
         }
 
+        public async Task<IEnumerable<Mission>> GetAllMissionsInGameAsync(int gameId)
+        {
+            return await _context.Mission.Where(m => m.GameId == gameId).ToListAsync();
+        }
+
         public async Task<Mission> GetMissionAsync(int id)
         {
             return await _context.Mission.FindAsync(id);
+        }
+
+        public async Task<Mission> GetOneMissionInGameAsync(int gameId, int missionId)
+        {
+            return await _context.Mission.FirstOrDefaultAsync(m => m.GameId == gameId && m.MissionId == missionId);
         }
 
         public bool MissionExists(int id)

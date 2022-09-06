@@ -111,10 +111,5 @@ namespace HumansVsZombies_Backend.Controllers
 
             return NoContent();
         }
-
-        //private bool PlayerExists(int id)
-        //{
-        //    return _context.Player.Any(e => e.PlayerId == id);
-        //}
     }
 }

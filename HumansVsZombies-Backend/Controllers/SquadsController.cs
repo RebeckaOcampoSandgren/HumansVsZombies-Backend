@@ -130,10 +130,5 @@ namespace HumansVsZombies_Backend.Controllers
         {
             return _mapper.Map<List<SquadCheckinReadDTO>>(await _squadService.GetAllCheckinsInSquadAsync(id));
         }
-
-        /*private bool SquadExists(int id)
-        {
-            return _context.Squad.Any(e => e.SquadId == id);
-        }*/
     }
 }

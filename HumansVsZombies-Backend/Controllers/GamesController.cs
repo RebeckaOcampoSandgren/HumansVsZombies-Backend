@@ -146,10 +146,5 @@ namespace HumansVsZombies_Backend.Controllers
 
             return _mapper.Map<PlayerReadDTO>(player);
         }
-
-        //private bool GameExists(int id)
-        //{
-        //    return _context.Game.Any(e => e.GameId == id);
-        //}
     }
 }

@@ -93,10 +93,5 @@ namespace HumansVsZombies_Backend.Controllers
             await _userService.DeleteUserAsync(id);
             return NoContent();
         }
-
-        /*private bool UserExists(int id)
-        {
-            return _context.User.Any(e => e.UserId == id);
-        }*/
     }
 }
