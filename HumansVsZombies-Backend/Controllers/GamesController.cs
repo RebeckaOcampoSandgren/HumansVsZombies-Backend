@@ -134,7 +134,7 @@ namespace HumansVsZombies_Backend.Controllers
         }
 
         //reporting
-        [HttpGet("{gameId}/player")]
+        [HttpGet("{gameId}/get/player")]
         public async Task<ActionResult<PlayerReadDTO>> GetOnePlayerInGame(int gameId, int playerId)
         {
             var player = await _gameService.GetOnePlayerInGameAsync(gameId, playerId);

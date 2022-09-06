@@ -14,5 +14,6 @@ namespace HumansVsZombies_Backend.Services
         public Task UpdatePlayerAsync(Player player);
         public Task DeletePlayerAsync(int id);
         public bool PlayerExists(int id);
+        public Task UpdatePlayerInGameAsync(Player player, int gameId, int playerId);
     }
 }

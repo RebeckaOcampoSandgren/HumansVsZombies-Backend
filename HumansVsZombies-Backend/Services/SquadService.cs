@@ -42,6 +42,16 @@ namespace HumansVsZombies_Backend.Services
 
         }
 
+        public async Task<IEnumerable<Squad>> GetAllSquadsInGameAsync(int gameId)
+        {
+            return await _context.Squad.Include(ssm => ssm.SquadMembers).Include(ssc => ssc.SquadCheckins).Include(sc => sc.Chats).Where(g => g.GameId == gameId).ToListAsync();
+        }
+
+        public async Task<Squad> GetOneSquadInGameAsync(int gameId, int squadId)
+        {
+            return await _context.Squad.Include(ssm => ssm.SquadMembers).Include(ssc => ssc.SquadCheckins).Include(sc => sc.Chats).FirstOrDefaultAsync(s => s.GameId == gameId && s.SquadId == squadId);
+        }
+
         public bool SquadExists(int id)
         {
             return _context.Squad.Any(e => e.SquadId == id);

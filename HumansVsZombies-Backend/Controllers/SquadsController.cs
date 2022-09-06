@@ -94,6 +94,27 @@ namespace HumansVsZombies_Backend.Controllers
             return NoContent();
         }
 
+        //reporting, get all squads in a game
+        [HttpGet("{gameId}/get/squads")]
+        public async Task<IEnumerable<SquadReadDTO>> GetAllSquadsInGame(int gameId)
+        {
+            return _mapper.Map<List<SquadReadDTO>>(await _squadService.GetAllSquadsInGameAsync(gameId));
+        }
+
+        //reporting
+        [HttpGet("{gameId}/get/squad")]
+        public async Task<ActionResult<SquadReadDTO>> GetOneSquadInGame(int gameId, int squadId)
+        {
+            var squad = await _squadService.GetOneSquadInGameAsync(gameId, squadId);
+
+            if (squad == null)
+            {
+                return NotFound();
+            }
+
+            return _mapper.Map<SquadReadDTO>(squad);
+        }
+
         /*private bool SquadExists(int id)
         {
             return _context.Squad.Any(e => e.SquadId == id);
