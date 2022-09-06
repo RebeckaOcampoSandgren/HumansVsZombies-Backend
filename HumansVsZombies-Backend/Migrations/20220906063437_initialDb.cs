@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace HumansVsZombies_Backend.Migrations
 {
-    public partial class initialDB : Migration
+    public partial class initialDb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -252,10 +252,10 @@ namespace HumansVsZombies_Backend.Migrations
                 columns: new[] { "PlayerId", "BiteCode", "GameId", "IsHuman", "IsPatientZero", "UserId" },
                 values: new object[,]
                 {
-                    { 1, 577, 1, true, false, 1 },
-                    { 2, 3731, 1, false, true, 2 },
-                    { 3, 17560, 2, false, false, 3 },
-                    { 4, 7998, 3, true, false, 4 }
+                    { 1, 20861, 1, true, false, 1 },
+                    { 2, 12139, 1, false, true, 2 },
+                    { 3, 22135, 2, false, false, 3 },
+                    { 4, 13224, 3, true, false, 4 }
                 });
 
             migrationBuilder.InsertData(
@@ -274,8 +274,8 @@ namespace HumansVsZombies_Backend.Migrations
                 columns: new[] { "ChatId", "ChatTime", "GameId", "IsHumanGlobal", "IsZombieGlobal", "Message", "PlayerId", "SquadId" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2022, 9, 5, 14, 41, 1, 26, DateTimeKind.Local).AddTicks(3599), 1, false, false, "glhf", 1, null },
-                    { 2, new DateTime(2022, 9, 5, 14, 41, 1, 26, DateTimeKind.Local).AddTicks(4086), 1, true, false, "gg", 1, 4 }
+                    { 1, new DateTime(2022, 9, 6, 8, 34, 37, 524, DateTimeKind.Local).AddTicks(6830), 1, false, false, "glhf", 1, null },
+                    { 2, new DateTime(2022, 9, 6, 8, 34, 37, 524, DateTimeKind.Local).AddTicks(7308), 1, true, false, "gg", 1, 4 }
                 });
 
             migrationBuilder.InsertData(
@@ -292,17 +292,17 @@ namespace HumansVsZombies_Backend.Migrations
             migrationBuilder.InsertData(
                 table: "SquadCheckin",
                 columns: new[] { "SquadCheckinId", "EndTime", "GameId", "Lat", "Lng", "SquadId", "SquadMemberId", "StartTime" },
-                values: new object[] { 2, new DateTime(2022, 9, 5, 14, 51, 1, 25, DateTimeKind.Local).AddTicks(4780), 2, -26.66386, 25.283757999999999, 2, 2, new DateTime(2022, 9, 5, 14, 41, 1, 25, DateTimeKind.Local).AddTicks(4771) });
+                values: new object[] { 2, new DateTime(2022, 9, 6, 8, 44, 37, 523, DateTimeKind.Local).AddTicks(9282), 2, -26.66386, 25.283757999999999, 2, 2, new DateTime(2022, 9, 6, 8, 34, 37, 523, DateTimeKind.Local).AddTicks(9274) });
 
             migrationBuilder.InsertData(
                 table: "SquadCheckin",
                 columns: new[] { "SquadCheckinId", "EndTime", "GameId", "Lat", "Lng", "SquadId", "SquadMemberId", "StartTime" },
-                values: new object[] { 3, new DateTime(2022, 9, 5, 14, 51, 1, 25, DateTimeKind.Local).AddTicks(4786), 2, -26.66386, 25.283757999999999, 2, 2, new DateTime(2022, 9, 5, 14, 41, 1, 25, DateTimeKind.Local).AddTicks(4784) });
+                values: new object[] { 3, new DateTime(2022, 9, 6, 8, 44, 37, 523, DateTimeKind.Local).AddTicks(9288), 2, -26.66386, 25.283757999999999, 2, 2, new DateTime(2022, 9, 6, 8, 34, 37, 523, DateTimeKind.Local).AddTicks(9286) });
 
             migrationBuilder.InsertData(
                 table: "SquadCheckin",
                 columns: new[] { "SquadCheckinId", "EndTime", "GameId", "Lat", "Lng", "SquadId", "SquadMemberId", "StartTime" },
-                values: new object[] { 1, new DateTime(2022, 9, 5, 14, 51, 1, 25, DateTimeKind.Local).AddTicks(3630), 1, -26.66386, 25.283757999999999, 1, 1, new DateTime(2022, 9, 5, 14, 41, 1, 22, DateTimeKind.Local).AddTicks(5538) });
+                values: new object[] { 1, new DateTime(2022, 9, 6, 8, 44, 37, 523, DateTimeKind.Local).AddTicks(8245), 1, -26.66386, 25.283757999999999, 1, 1, new DateTime(2022, 9, 6, 8, 34, 37, 519, DateTimeKind.Local).AddTicks(3797) });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Chat_GameId",

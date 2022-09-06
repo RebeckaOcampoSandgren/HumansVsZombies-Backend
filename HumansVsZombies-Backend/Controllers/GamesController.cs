@@ -11,6 +11,7 @@ using System.Net.Mime;
 using HumansVsZombies_Backend.DTOs.GameDTO;
 using HumansVsZombies_Backend.Services;
 using AutoMapper;
+using HumansVsZombies_Backend.DTOs.PlayerDTO;
 
 namespace HumansVsZombies_Backend.Controllers
 {
@@ -125,7 +126,26 @@ namespace HumansVsZombies_Backend.Controllers
             return chats;
         }
 
+        //reporting
+        [HttpGet("{id}/players")]
+        public async Task<ActionResult<IEnumerable<PlayerReadDTO>>> GetAllPlayersInGame(int id)
+        {
+            return _mapper.Map<List<PlayerReadDTO>>(await _gameService.GetAllPlayersInGameAsync(id));
+        }
 
+        //reporting
+        [HttpGet("{gameId}/player")]
+        public async Task<ActionResult<PlayerReadDTO>> GetOnePlayerInGame(int gameId, int playerId)
+        {
+            var player = await _gameService.GetOnePlayerInGameAsync(gameId, playerId);
+
+            if (player == null)
+            {
+                return NotFound();
+            }
+
+            return _mapper.Map<PlayerReadDTO>(player);
+        }
 
         //private bool GameExists(int id)
         //{
