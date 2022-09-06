@@ -17,8 +17,6 @@ namespace HumansVsZombies_Backend.Models
         [Required]
         public bool IsHuman { get; set; }
         //Relationships
-        [Required]
-        [ForeignKey("GameId")]
         public int GameId { get; set; }
         public Game Game { get; set; }
         public virtual ICollection<SquadMember> SquadMembers { get; set; }

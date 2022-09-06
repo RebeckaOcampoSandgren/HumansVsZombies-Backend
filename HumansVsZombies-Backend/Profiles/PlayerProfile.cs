@@ -28,12 +28,7 @@ namespace HumansVsZombies_Backend.Profiles
 
 
             //Player<->PlayerUpdateDTO
-            CreateMap<Player, PlayerUpdateDTO>()
-                .ForMember(g => g.GameId, opt => opt
-                .MapFrom(g => g.GameId))
-                .ForMember(u => u.UserId, opt => opt
-                .MapFrom(u => u.UserId))
-                .ReverseMap();
+            CreateMap<Player, PlayerUpdateDTO>().ReverseMap();
         }
     }
 }

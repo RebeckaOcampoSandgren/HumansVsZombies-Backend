@@ -23,13 +23,16 @@ namespace HumansVsZombies_Backend.Profiles
                 // Turning related missions into int Arrays
                 .ForMember(g => g.Missions, opt => opt
                 .MapFrom(g => g.Missions.Select(x => x.MissionId).ToArray()))
+                // Turning related players into int Arrays
+                .ForMember(g => g.Players, opt => opt
+                .MapFrom(g => g.Players.Select(x => x.PlayerId).ToArray()))
                 .ReverseMap();
 
             //Game<->GameCreateDTO
-            CreateMap<Game, GameCreateDTO>();
+            CreateMap<Game, GameCreateDTO>().ReverseMap();
 
             //Game<->GameUpdateDTO
-            CreateMap<Game, GameUpdateDTO>();
+            CreateMap<Game, GameUpdateDTO>().ReverseMap();
         }
     }
 }

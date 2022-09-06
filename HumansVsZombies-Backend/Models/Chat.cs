@@ -22,14 +22,10 @@ namespace HumansVsZombies_Backend.Models
         public DateTime ChatTime { get; set; }
 
         //Relationship one-to-many
-        [Required]
-        [ForeignKey("GameId")]
         public int GameId { get; set; }
         public Game Game { get; set; }
-        [ForeignKey("PlayerId")]
         public int PlayerId { get; set; }
         public Player Player { get; set; }
-        [ForeignKey("SquadId")]
         public int? SquadId { get; set; }
         public Squad Squad { get; set; }
 

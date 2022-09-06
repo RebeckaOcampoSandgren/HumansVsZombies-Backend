@@ -23,14 +23,14 @@ namespace HumansVsZombies_Backend.Profiles
                .ReverseMap();
 
             //Chat<->ChatCreateDTO
-            CreateMap<Chat, ChatCreateDTO>();
+            CreateMap<Chat, ChatCreateDTO>().ReverseMap();
 
             //Chat<->ChatUpdateDTO
             CreateMap<Chat, ChatUpdateDTO>()
-                .ForMember(cdto => cdto.PlayerId, opt => opt
-                .MapFrom(c => c.PlayerId))
                 .ForMember(cdto => cdto.GameId, opt => opt
                 .MapFrom(c => c.GameId))
+                .ForMember(cdto => cdto.PlayerId, opt => opt
+                .MapFrom(c => c.PlayerId))
                 .ForMember(cdto => cdto.SquadId, opt => opt
                 .MapFrom(c => c.SquadId))
                 .ReverseMap();
