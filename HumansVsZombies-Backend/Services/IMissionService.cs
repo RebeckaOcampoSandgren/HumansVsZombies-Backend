@@ -13,6 +13,8 @@ namespace HumansVsZombies_Backend.Services
         public Task<Mission> AddMissionAsync(Mission mission);
         public Task UpdateMissionAsync(Mission mission);
         public Task DeleteMissionAsync(int id);
+        public Task<IEnumerable<Mission>> GetAllMissionsInGameAsync(int gameId);
+        public Task<Mission> GetOneMissionInGameAsync(int gameId, int missionId);
         public bool MissionExists(int id);
 
     }

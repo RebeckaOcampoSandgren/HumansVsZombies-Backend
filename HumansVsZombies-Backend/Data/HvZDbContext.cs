@@ -48,6 +48,13 @@ namespace HumansVsZombies_Backend.Data
                .HasForeignKey(e => e.SquadId)
                .OnDelete(DeleteBehavior.Restrict);
 
+            ////Relationship one-to-many Chat-game
+            modelBuilder.Entity<Chat>()
+               .HasOne<Game>(s => s.Game)
+               .WithMany(c => c.Chats)
+               .HasForeignKey(e => e.GameId)
+               .OnDelete(DeleteBehavior.Restrict);
+
             ////Relationship one-to-many SquadChechin-Squad
             modelBuilder.Entity<SquadCheckin>()
                 .HasOne<Squad>(s => s.Squad)

@@ -11,6 +11,7 @@ using System.Net.Mime;
 using HumansVsZombies_Backend.DTOs.GameDTO;
 using HumansVsZombies_Backend.Services;
 using AutoMapper;
+using HumansVsZombies_Backend.DTOs.PlayerDTO;
 
 namespace HumansVsZombies_Backend.Controllers
 {
@@ -22,10 +23,12 @@ namespace HumansVsZombies_Backend.Controllers
     public class GamesController : ControllerBase
     {
         private readonly IGameService _gameService;
+        private readonly HvZDbContext _context;
         private readonly IMapper _mapper;
 
-        public GamesController(IGameService gameService, IMapper mapper)
+        public GamesController(HvZDbContext context, IGameService gameService, IMapper mapper)
         {
+            _context = context;
             _gameService = gameService;
             _mapper = mapper;
         }
@@ -93,9 +96,55 @@ namespace HumansVsZombies_Backend.Controllers
             return NoContent();
         }
 
-        //private bool GameExists(int id)
-        //{
-        //    return _context.Game.Any(e => e.GameId == id);
-        //}
+        //reporting
+        [HttpGet("{id}/humanChats")]
+        public async Task<ActionResult<IEnumerable<Chat>>> GetAllHumanChatsInGame(int id)
+        {
+
+            var chats = await _context.Game.Where(g => g.GameId == id).SelectMany(c => c.Chats).Where(c => c.IsHumanGlobal == true).ToListAsync();
+
+            if (chats == null)
+            {
+                return NotFound();
+            }
+
+            return chats;
+        }
+
+        //reporting
+        [HttpGet("{id}/ZombieChats")]
+        public async Task<ActionResult<IEnumerable<Chat>>> GetAllZombieChatsInGame(int id)
+        {
+
+            var chats = await _context.Game.Where(g => g.GameId == id).SelectMany(c => c.Chats).Where(c => c.IsZombieGlobal == true).ToListAsync();
+
+            if (chats == null)
+            {
+                return NotFound();
+            }
+
+            return chats;
+        }
+
+        //reporting
+        [HttpGet("{id}/players")]
+        public async Task<ActionResult<IEnumerable<PlayerReadDTO>>> GetAllPlayersInGame(int id)
+        {
+            return _mapper.Map<List<PlayerReadDTO>>(await _gameService.GetAllPlayersInGameAsync(id));
+        }
+
+        //reporting
+        [HttpGet("{gameId}/get/player")]
+        public async Task<ActionResult<PlayerReadDTO>> GetOnePlayerInGame(int gameId, int playerId)
+        {
+            var player = await _gameService.GetOnePlayerInGameAsync(gameId, playerId);
+
+            if (player == null)
+            {
+                return NotFound();
+            }
+
+            return _mapper.Map<PlayerReadDTO>(player);
+        }
     }
 }

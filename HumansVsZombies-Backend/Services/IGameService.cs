@@ -13,6 +13,8 @@ namespace HumansVsZombies_Backend.Services
         public Task<Game> AddGameAsync(Game game);
         public Task UpdateGameAsync(Game game);
         public Task DeleteGameAsync(int id);
+        public Task<Player> GetOnePlayerInGameAsync(int gameId, int playerId);
+        public Task<IEnumerable<Player>> GetAllPlayersInGameAsync(int id);
         public bool GameExists(int id);
     }
 }

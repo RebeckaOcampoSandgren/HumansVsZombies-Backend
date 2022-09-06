@@ -92,10 +92,5 @@ namespace HumansVsZombies_Backend.Controllers
             await _chatService.DeleteChatAsync(id);
             return NoContent();
         }
-
-        //private bool ChatExists(int id)
-        //{
-        //    return _context.Chat.Any(e => e.ChatId == id);
-        //}
     }
 }

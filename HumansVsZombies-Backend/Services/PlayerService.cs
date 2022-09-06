@@ -51,5 +51,12 @@ namespace HumansVsZombies_Backend.Services
             _context.Entry(player).State = EntityState.Modified;
             await _context.SaveChangesAsync();
         }
+
+        public async Task UpdatePlayerInGameAsync(Player player, int gameId, int playerId)
+        {
+            var playerToUpdate = _context.Player.Where(p => p.GameId == gameId && p.PlayerId == playerId).Single();
+            _context.Entry(playerToUpdate).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+        }
     }
 }

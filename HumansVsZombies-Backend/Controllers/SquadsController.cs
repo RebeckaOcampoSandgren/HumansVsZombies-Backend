@@ -11,6 +11,8 @@ using System.Net.Mime;
 using HumansVsZombies_Backend.DTOs.SquadDTO;
 using HumansVsZombies_Backend.Services;
 using AutoMapper;
+using HumansVsZombies_Backend.DTOs.ChatDTO;
+using HumansVsZombies_Backend.DTOs.SquadCheckinDTO;
 
 namespace HumansVsZombies_Backend.Controllers
 {
@@ -94,9 +96,39 @@ namespace HumansVsZombies_Backend.Controllers
             return NoContent();
         }
 
-        /*private bool SquadExists(int id)
+        //reporting, get all squads in a game
+        [HttpGet("{gameId}/get/squads")]
+        public async Task<IEnumerable<SquadReadDTO>> GetAllSquadsInGame(int gameId)
         {
-            return _context.Squad.Any(e => e.SquadId == id);
-        }*/
+            return _mapper.Map<List<SquadReadDTO>>(await _squadService.GetAllSquadsInGameAsync(gameId));
+        }
+
+        //reporting
+        [HttpGet("{gameId}/get/squad")]
+        public async Task<ActionResult<SquadReadDTO>> GetOneSquadInGame(int gameId, int squadId)
+        {
+            var squad = await _squadService.GetOneSquadInGameAsync(gameId, squadId);
+
+            if (squad == null)
+            {
+                return NotFound();
+            }
+
+            return _mapper.Map<SquadReadDTO>(squad);
+        }
+
+        //reporting method to get all chats for a specific squad
+        [HttpGet("{id}/chats")]
+        public async Task<ActionResult<IEnumerable<ChatReadDTO>>> GetAllChatsInSquad(int id)
+        {
+            return _mapper.Map<List<ChatReadDTO>>(await _squadService.GetAllChatsInSquadAsync(id));
+        }
+
+        //reporting method to get all checkin-markers for a specific squad
+        [HttpGet("{id}/checkins")]
+        public async Task<ActionResult<IEnumerable<SquadCheckinReadDTO>>> GetAllCheckinsInSquad(int id)
+        {
+            return _mapper.Map<List<SquadCheckinReadDTO>>(await _squadService.GetAllCheckinsInSquadAsync(id));
+        }
     }
 }

@@ -22,11 +22,13 @@ namespace HumansVsZombies_Backend.Controllers
     public class PlayersController : ControllerBase
     {
         private readonly IPlayerService _playerService;
+        private readonly IGameService _gameService;
         private readonly IMapper _mapper;
 
-        public PlayersController(IPlayerService playerService, IMapper mapper)
+        public PlayersController(IPlayerService playerService, IGameService gameService, IMapper mapper)
         {
             _playerService = playerService;
+            _gameService = gameService;
             _mapper = mapper;
         }
 
@@ -95,9 +97,19 @@ namespace HumansVsZombies_Backend.Controllers
 
         }
 
-        //private bool PlayerExists(int id)
-        //{
-        //    return _context.Player.Any(e => e.PlayerId == id);
-        //}
+        // reporting, updates a player in a game
+        [HttpPut("{playerId}/update/game")]
+        public async Task<IActionResult> UpdatePlayerInGame(int gameId, int playerId, PlayerUpdateDTO dtoPlayer)
+        {
+            if (!_playerService.PlayerExists(playerId))
+            {
+                return NotFound();
+            }
+
+            Player domainPlayer = _mapper.Map<Player>(dtoPlayer);
+            await _playerService.UpdatePlayerInGameAsync(domainPlayer, gameId, playerId);
+
+            return NoContent();
+        }
     }
 }

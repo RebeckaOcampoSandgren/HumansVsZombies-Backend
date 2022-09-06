@@ -94,9 +94,25 @@ namespace HumansVsZombies_Backend.Controllers
             return NoContent();
         }
 
-        //private bool MissionExists(int id)
-        //{
-        //    return _context.Mission.Any(e => e.MissionId == id);
-        //}
+        //reporting, get all missions in a game
+        [HttpGet("{gameId}/get/missions")]
+        public async Task<IEnumerable<MissionReadDTO>> GetAllMissionsInGame(int gameId)
+        {
+            return _mapper.Map<List<MissionReadDTO>>(await _missionService.GetAllMissionsInGameAsync(gameId));
+        }
+
+        //reporting
+        [HttpGet("{gameId}/get/mission")]
+        public async Task<ActionResult<MissionReadDTO>> GetOneMissionInGame(int gameId, int missionId)
+        {
+            var mission = await _missionService.GetOneMissionInGameAsync(gameId, missionId);
+
+            if (mission == null)
+            {
+                return NotFound();
+            }
+
+            return _mapper.Map<MissionReadDTO>(mission);
+        }
     }
 }

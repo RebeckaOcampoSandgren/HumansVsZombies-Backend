@@ -17,5 +17,7 @@ namespace HumansVsZombies_Backend.DTOs.GameDTO
         public List<int> Chats { get; set; }
         public List<int> Squads { get; set; }
         public List<int> Missions { get; set; }
+        public List<int> Players { get; set; }
+
     }
 }

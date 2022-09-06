@@ -94,10 +94,5 @@ namespace HumansVsZombies_Backend.Controllers
             await _squadMemberService.DeleteSquadMemberAsync(id);
             return NoContent();
         }
-
-        /*private bool SquadMemberExists(int id)
-        {
-            return _context.SquadMember.Any(e => e.SquadMemberId == id);
-        }*/
     }
 }

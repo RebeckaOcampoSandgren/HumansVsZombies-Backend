@@ -24,8 +24,6 @@ namespace HumansVsZombies_Backend.Models
         public DateTime? EndTime { get; set; }
 
         //Relationship one-to-many
-        [Required]
-        [ForeignKey("GameId")]
         public int GameId { get; set; }
         public Game Game { get; set; }
 
