@@ -1,0 +1,19 @@
+version: '3.2'
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    working_dir: /app
+    ports:
+      - 80:80
+    environment:
+      DATABASE_HOST: mssql
+  mssql:
+    image: mcr.microsoft.com/mssql/server
+    ports:
+      - 1433:1433
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=h3mligt!
