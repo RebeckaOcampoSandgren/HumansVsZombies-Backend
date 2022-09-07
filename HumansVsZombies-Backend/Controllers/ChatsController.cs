@@ -14,7 +14,7 @@ using AutoMapper;
 
 namespace HumansVsZombies_Backend.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/chats")]
     [ApiController]
     [Produces(MediaTypeNames.Application.Json)]
     [Consumes(MediaTypeNames.Application.Json)]
@@ -30,14 +30,21 @@ namespace HumansVsZombies_Backend.Controllers
             _mapper = mapper;
         }
 
-        // GET: api/Chats
+        /// <summary>
+        /// Get all chats
+        /// </summary>
+        /// <returns> A list of chats </returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ChatReadDTO>>> GetAllChats()
         {
             return _mapper.Map<List<ChatReadDTO>>(await _chatService.GetAllChatsAsync());
         }
 
-        // GET: api/Chats/5
+        /// <summary>
+        /// Get a specific chat
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns> A chat </returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<ChatReadDTO>> GetChat(int id)
         {
@@ -51,7 +58,12 @@ namespace HumansVsZombies_Backend.Controllers
             return _mapper.Map<ChatReadDTO>(chat);
         }
 
-        // PUT: api/Chats/5
+        /// <summary>
+        /// Update a chat
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="chatDto"></param>
+        /// <returns> Response with no content </returns>
         [HttpPut("{id}")]
         public async Task<IActionResult> PutChat(int id, ChatUpdateDTO chatDto)
         {
@@ -70,7 +82,11 @@ namespace HumansVsZombies_Backend.Controllers
             return NoContent();
         }
 
-        // POST: api/Chats
+        /// <summary>
+        /// Create a new chat
+        /// </summary>
+        /// <param name="chatDto"></param>
+        /// <returns> Created response and the created chat </returns>
         [HttpPost]
         public async Task<ActionResult<Chat>> PostChat(ChatCreateDTO chatDto)
         {
@@ -80,7 +96,11 @@ namespace HumansVsZombies_Backend.Controllers
             return CreatedAtAction("GetChat", new { id = domainChat.ChatId }, _mapper.Map<ChatReadDTO>(domainChat));
         }
 
-        // DELETE: api/Chats/5
+        /// <summary>
+        /// Delete a chat
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns> Response with no content </returns>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteChat(int id)
         {

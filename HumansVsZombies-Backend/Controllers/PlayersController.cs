@@ -14,7 +14,7 @@ using AutoMapper;
 
 namespace HumansVsZombies_Backend.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/players")]
     [ApiController]
     [Produces(MediaTypeNames.Application.Json)]
     [Consumes(MediaTypeNames.Application.Json)]
@@ -22,24 +22,29 @@ namespace HumansVsZombies_Backend.Controllers
     public class PlayersController : ControllerBase
     {
         private readonly IPlayerService _playerService;
-        private readonly IGameService _gameService;
         private readonly IMapper _mapper;
 
-        public PlayersController(IPlayerService playerService, IGameService gameService, IMapper mapper)
+        public PlayersController(IPlayerService playerService, IMapper mapper)
         {
             _playerService = playerService;
-            _gameService = gameService;
             _mapper = mapper;
         }
 
-        // GET: api/Players
+        /// <summary>
+        /// Get all players
+        /// </summary>
+        /// <returns> A list of players </returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PlayerReadDTO>>> GetAllPlayers()
         {
             return _mapper.Map<List<PlayerReadDTO>>(await _playerService.GetAllPlayersAsync());
         }
 
-        // GET: api/Players/5
+        /// <summary>
+        /// Get a specific player by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns> A player </returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<PlayerReadDTO>> GetPlayer(int id)
         {
@@ -53,7 +58,12 @@ namespace HumansVsZombies_Backend.Controllers
             return _mapper.Map<PlayerReadDTO>(player);
         }
 
-        // PUT: api/Players/5
+        /// <summary>
+        /// Update a player
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="dtoPlayer"></param>
+        /// <returns> Response with no content </returns>
         [HttpPut("{id}")]
         public async Task<IActionResult> PutPlayer(int id, PlayerUpdateDTO dtoPlayer)
         {
@@ -72,33 +82,14 @@ namespace HumansVsZombies_Backend.Controllers
             return NoContent();
         }
 
-        // POST: api/Players
-        [HttpPost]
-        public async Task<ActionResult<Player>> PostPlayer(PlayerCreateDTO playerDto)
-        {
-            Player domainPlayer = _mapper.Map<Player>(playerDto);
-            domainPlayer = await _playerService.AddPlayerAsync(domainPlayer);
-
-
-            return CreatedAtAction("GetPlayer", new { id = domainPlayer.PlayerId }, _mapper.Map<PlayerReadDTO>(domainPlayer));
-        }
-
-        // DELETE: api/Players/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeletePlayer(int id)
-        {
-            if (!_playerService.PlayerExists(id))
-            {
-                return NotFound();
-            }
-
-            await _playerService.DeletePlayerAsync(id);
-            return NoContent();
-
-        }
-
-        // reporting, updates a player in a game
-        [HttpPut("{playerId}/update/game")]
+        /// <summary>
+        /// Update a specific player in a specific game
+        /// </summary>
+        /// <param name="gameId"></param>
+        /// <param name="playerId"></param>
+        /// <param name="dtoPlayer"></param>
+        /// <returns> Response with no content </returns>
+        [HttpPut("{playerId}/{gameId}")]
         public async Task<IActionResult> UpdatePlayerInGame(int gameId, int playerId, PlayerUpdateDTO dtoPlayer)
         {
             if (!_playerService.PlayerExists(playerId))
@@ -110,6 +101,39 @@ namespace HumansVsZombies_Backend.Controllers
             await _playerService.UpdatePlayerInGameAsync(domainPlayer, gameId, playerId);
 
             return NoContent();
+        }
+
+        /// <summary>
+        /// Create a new player
+        /// </summary>
+        /// <param name="playerDto"></param>
+        /// <returns> Created response and the created player </returns>
+        [HttpPost]
+        public async Task<ActionResult<Player>> PostPlayer(PlayerCreateDTO playerDto)
+        {
+            Player domainPlayer = _mapper.Map<Player>(playerDto);
+            domainPlayer = await _playerService.AddPlayerAsync(domainPlayer);
+
+
+            return CreatedAtAction("GetPlayer", new { id = domainPlayer.PlayerId }, _mapper.Map<PlayerReadDTO>(domainPlayer));
+        }
+
+        /// <summary>
+        /// Delete a player
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns> Response with no content </returns>
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeletePlayer(int id)
+        {
+            if (!_playerService.PlayerExists(id))
+            {
+                return NotFound();
+            }
+
+            await _playerService.DeletePlayerAsync(id);
+            return NoContent();
+
         }
     }
 }
