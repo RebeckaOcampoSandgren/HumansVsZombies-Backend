@@ -1,5 +1,5 @@
 # HumanVsZombies
-It is an ASP.NET Core Web API in C# and an Entity Framework Code First workflow. The three entitites have full CRUD operations plus additional reports to the basic reads. The Web API uses Swagger for documentation and design.
+It is an ASP.NET Core Web API in C# and an Entity Framework Code First workflow. The nine entitites have full CRUD operations plus additional reports to the basic reads. The Web API uses Swagger for documentation and design.
 
 ## Installation
 
