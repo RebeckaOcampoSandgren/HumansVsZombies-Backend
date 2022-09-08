@@ -22,7 +22,7 @@ namespace HumansVsZombies_Backend.Data
         public DbSet<Mission> Mission { get; set; }
         public DbSet<Chat> Chat { get; set; }
         public DbSet<Player> Player { get; set; }
-
+        public DbSet<Kill> Kill { get; set; }
         public DbSet<SquadMember> SquadMember { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -68,6 +68,25 @@ namespace HumansVsZombies_Backend.Data
                 .WithMany(sq => sq.SquadCheckins)
                 .HasForeignKey(e => e.SquadMemberId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            ////Relationship one-to-many Kill-Player
+            modelBuilder.Entity<Kill>()
+               .HasOne(k => k.Killer)
+               .WithMany(p => p.Kills)
+               .HasForeignKey(e => e.KillerId)
+               .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Kill>()
+                .HasOne(k => k.Victim)
+                .WithOne(p => p.Kill)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            ////Relationship one-to-many Kill-Game
+            modelBuilder.Entity<Kill>()
+                .HasOne<Game>(g => g.Game)
+                .WithMany(k => k.Kills)
+                .HasForeignKey(e => e.GameId)
+                .OnDelete(DeleteBehavior.NoAction);
 
             //Seed data
             modelBuilder.Entity<Game>().HasData(SeedHelper.GetGameSeeds());

@@ -21,6 +21,9 @@ namespace HumansVsZombies_Backend.Profiles
                // Turning related chats into int Arrays
                .ForMember(c => c.Chats, opt => opt
                .MapFrom(c => c.Chats.Select(x => x.ChatId).ToArray()))
+               // Turning related victims into int Arrays
+               .ForMember(c => c.Kills, opt => opt
+               .MapFrom(c => c.Kills.Select(x => x.VictimId).ToArray()))
                .ReverseMap();
 
             //Player<->PlayerCreateDTO

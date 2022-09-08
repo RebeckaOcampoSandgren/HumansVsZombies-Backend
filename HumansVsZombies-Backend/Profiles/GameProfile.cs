@@ -26,6 +26,9 @@ namespace HumansVsZombies_Backend.Profiles
                 // Turning related players into int Arrays
                 .ForMember(g => g.Players, opt => opt
                 .MapFrom(g => g.Players.Select(x => x.PlayerId).ToArray()))
+               // Turning related kills into int Arrays
+               .ForMember(c => c.Kills, opt => opt
+               .MapFrom(c => c.Kills.Select(x => x.KillId).ToArray()))
                 .ReverseMap();
 
             //Game<->GameCreateDTO
