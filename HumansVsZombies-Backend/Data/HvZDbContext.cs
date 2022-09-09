@@ -97,6 +97,7 @@ namespace HumansVsZombies_Backend.Data
             modelBuilder.Entity<SquadCheckin>().HasData(SeedHelper.GetSquadCheckinSeeds());
             modelBuilder.Entity<Mission>().HasData(SeedHelper.GetMissionSeeds());
             modelBuilder.Entity<Chat>().HasData(SeedHelper.GetChatSeeds());
+            modelBuilder.Entity<Kill>().HasData(SeedHelper.GetKillSeeds());
 
         }
 

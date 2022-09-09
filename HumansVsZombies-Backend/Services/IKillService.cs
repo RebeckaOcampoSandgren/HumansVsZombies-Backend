@@ -8,8 +8,8 @@ namespace HumansVsZombies_Backend.Services
 {
     public interface IKillService
     {
-       // public Task<IEnumerable<Kill>> GetAllKillsAsync();
-       // public Task<Kill> GetKillAsync(int id);
+        public Task<IEnumerable<Kill>> GetAllKillsAsync();
+        public Task<Kill> GetKillAsync(int id);
         public Task<Kill> AddKillAsync(Kill kill);
         public Task UpdateKillAsync(Kill kill);
         public Task DeleteKillAsync(int id);

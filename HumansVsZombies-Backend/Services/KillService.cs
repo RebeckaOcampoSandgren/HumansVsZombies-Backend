@@ -36,15 +36,15 @@ namespace HumansVsZombies_Backend.Services
             return _context.Kill.Any(e => e.KillId == id);
         }
 
-        //public async Task<IEnumerable<Kill>> GetAllKillsAsync()
-        //{
-            
-        //}
+        public async Task<IEnumerable<Kill>> GetAllKillsAsync()
+        {
+            return await _context.Kill.ToListAsync();
+        }
 
-        //public async Task<Kill> GetKillAsync(int id)
-        //{
-            
-        //}
+        public async Task<Kill> GetKillAsync(int id)
+        {
+            return await _context.Kill.FirstOrDefaultAsync(ki => ki.KillId == id);
+        }
 
         public async Task UpdateKillAsync(Kill kill)
         {

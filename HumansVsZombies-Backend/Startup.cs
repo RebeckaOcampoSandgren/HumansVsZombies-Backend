@@ -39,6 +39,7 @@ namespace HumansVsZombies_Backend
             services.AddScoped(typeof(IPlayerService), typeof(PlayerService));
             services.AddScoped(typeof(IMissionService), typeof(MissionService));
             services.AddScoped(typeof(ISquadService), typeof(SquadService));
+            services.AddScoped(typeof(IKillService), typeof(KillService));
             services.AddScoped(typeof(ISquadMemberService), typeof(SquadMemberService));
             services.AddScoped(typeof(ISquadCheckinService), typeof(SquadCheckinService));
             services.AddScoped(typeof(IUserService), typeof(UserService));

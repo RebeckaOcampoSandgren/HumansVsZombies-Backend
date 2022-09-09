@@ -7,6 +7,7 @@ namespace HumansVsZombies_Backend.DTOs.KillDTO
 {
     public class KillUpdateDTO
     {
+        public int KillId { get; set; }
         public DateTime TimeOfDeath { get; set; }
         #nullable enable
         public string? Story { get; set; }
