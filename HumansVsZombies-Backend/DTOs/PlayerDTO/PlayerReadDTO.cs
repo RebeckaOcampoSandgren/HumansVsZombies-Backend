@@ -15,5 +15,6 @@ namespace HumansVsZombies_Backend.DTOs.PlayerDTO
         public int User { get; set; }
         public int SquadMember { get; set; }
         public List<int> Chats { get; set; }
+        public List<int> Kills { get; set; }
     }
 }

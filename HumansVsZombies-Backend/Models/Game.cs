@@ -22,6 +22,7 @@ namespace HumansVsZombies_Backend.Models
         //relationships one to many
         public virtual ICollection<Player> Players { get; set; }
         public virtual ICollection<Chat> Chats { get; set; }
+        public virtual ICollection<Kill> Kills { get; set; }
         public virtual ICollection<Squad> Squads { get; set; }
         public virtual ICollection<Mission> Missions { get; set; }
     }

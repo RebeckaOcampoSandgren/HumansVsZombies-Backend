@@ -38,7 +38,7 @@ namespace HumansVsZombies_Backend.Services
 
         public async Task<IEnumerable<Game>> GetAllGamesAsync()
         {
-            return await _context.Game.Include(gc => gc.Chats).Include(gs => gs.Squads).Include(gm => gm.Missions).Include(gp => gp.Players).ToListAsync();
+            return await _context.Game.Include(gc => gc.Chats).Include(gs => gs.Squads).Include(gm => gm.Missions).Include(gp => gp.Players).Include(gk => gk.Kills).ToListAsync();
         }
 
         public async Task<IEnumerable<Player>> GetAllPlayersInGameAsync(int id)
@@ -48,7 +48,7 @@ namespace HumansVsZombies_Backend.Services
 
         public async Task<Game> GetGameAsync(int id)
         {
-            return await _context.Game.Include(gc => gc.Chats).Include(gs => gs.Squads).Include(gm => gm.Missions).Include(gp => gp.Players).FirstOrDefaultAsync(gi => gi.GameId == id);
+            return await _context.Game.Include(gc => gc.Chats).Include(gs => gs.Squads).Include(gm => gm.Missions).Include(gp => gp.Players).Include(gk => gk.Kills).FirstOrDefaultAsync(gi => gi.GameId == id);
         }
         public async Task<Player> GetOnePlayerInGameAsync(int gameId, int playerId)
         {

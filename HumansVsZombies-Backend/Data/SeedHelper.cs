@@ -309,5 +309,24 @@ namespace HumansVsZombies_Backend.Data
             return seedChat;
         }
 
+        public static IEnumerable<Kill> GetKillSeeds()
+        {
+            IEnumerable<Kill> seedKill = new List<Kill>()
+            {
+                new Kill
+                {
+                   KillId = 1,
+                   TimeOfDeath = new DateTime(2022, 10, 30, 14, 32, 21),
+                   Story = "IDK",
+                   Lat = -24.662060,
+                   Lng = 15.213158,
+                   GameId = 1,
+                   KillerId = 1,
+                   VictimId = 2
+                },
+            };
+            return seedKill;
+        }
+
     }
 }

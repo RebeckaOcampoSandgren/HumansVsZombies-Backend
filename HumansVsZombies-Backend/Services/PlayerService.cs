@@ -33,12 +33,12 @@ namespace HumansVsZombies_Backend.Services
 
         public async Task<IEnumerable<Player>> GetAllPlayersAsync()
         {
-            return await _context.Player.Include(pc => pc.Chats).ToListAsync();
+            return await _context.Player.Include(pc => pc.Chats).Include(pk => pk.Kills).ToListAsync();
         }
 
         public async Task<Player> GetPlayerAsync(int id)
         {
-            return await _context.Player.Include(pc => pc.Chats).FirstOrDefaultAsync(pi => pi.PlayerId == id);
+            return await _context.Player.Include(pc => pc.Chats).Include(pk => pk.Kills).FirstOrDefaultAsync(pi => pi.PlayerId == id);
         }
 
         public bool PlayerExists(int id)
