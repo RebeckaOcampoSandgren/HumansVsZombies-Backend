@@ -15,6 +15,7 @@ namespace HumansVsZombies_Backend.Models
         public string GameName { get; set; }
         [Required]
         public string GameState { get; set; }
+        public string Description { get; set; }
         public double? NwLat { get; set; }
         public double? NwLng { get; set; }
         public double? SeLat { get; set; }

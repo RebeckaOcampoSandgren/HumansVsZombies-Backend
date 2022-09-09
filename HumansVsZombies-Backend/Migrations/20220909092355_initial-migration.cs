@@ -15,6 +15,7 @@ namespace HumansVsZombies_Backend.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     GameName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     GameState = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     NwLat = table.Column<double>(type: "float", nullable: true),
                     NwLng = table.Column<double>(type: "float", nullable: true),
                     SeLat = table.Column<double>(type: "float", nullable: true),
@@ -252,12 +253,12 @@ namespace HumansVsZombies_Backend.Migrations
 
             migrationBuilder.InsertData(
                 table: "Game",
-                columns: new[] { "GameId", "GameName", "GameState", "NwLat", "NwLng", "SeLat", "SeLng" },
+                columns: new[] { "GameId", "Description", "GameName", "GameState", "NwLat", "NwLng", "SeLat", "SeLng" },
                 values: new object[,]
                 {
-                    { 1, "Left for Dead", "Registration", -26.66386, 25.283757999999999, -16.66686, 17.96686 },
-                    { 2, "Walking Dead", "In progress", -16.66386, 15.283758000000001, -6.6668599999999998, 7.9668599999999996 },
-                    { 3, "Days Gone", "Complete", -20.263860000000001, 21.283358, -13.66686, 12.99686 }
+                    { 1, "Intresting game", "Left for Dead", "Registration", -26.66386, 25.283757999999999, -16.66686, 17.96686 },
+                    { 2, "Absorbing game", "Walking Dead", "In progress", -16.66386, 15.283758000000001, -6.6668599999999998, 7.9668599999999996 },
+                    { 3, "Fascinating game", "Days Gone", "Complete", -20.263860000000001, 21.283358, -13.66686, 12.99686 }
                 });
 
             migrationBuilder.InsertData(
@@ -286,10 +287,10 @@ namespace HumansVsZombies_Backend.Migrations
                 columns: new[] { "PlayerId", "BiteCode", "GameId", "IsHuman", "IsPatientZero", "UserId" },
                 values: new object[,]
                 {
-                    { 1, 18635, 1, true, false, 1 },
-                    { 2, 22354, 1, false, true, 2 },
-                    { 3, 3236, 2, false, false, 3 },
-                    { 4, 8509, 3, true, false, 4 }
+                    { 1, 20527, 1, true, false, 1 },
+                    { 2, 24544, 1, false, true, 2 },
+                    { 3, 12611, 2, false, false, 3 },
+                    { 4, 18425, 3, true, false, 4 }
                 });
 
             migrationBuilder.InsertData(
@@ -308,14 +309,14 @@ namespace HumansVsZombies_Backend.Migrations
                 columns: new[] { "ChatId", "ChatTime", "GameId", "IsHumanGlobal", "IsZombieGlobal", "Message", "PlayerId", "SquadId" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2022, 9, 9, 11, 3, 31, 626, DateTimeKind.Local).AddTicks(6182), 1, false, false, "glhf", 1, null },
-                    { 2, new DateTime(2022, 9, 9, 11, 3, 31, 626, DateTimeKind.Local).AddTicks(6612), 1, true, false, "gg", 1, 4 }
+                    { 1, new DateTime(2022, 9, 9, 11, 23, 54, 602, DateTimeKind.Local).AddTicks(2468), 1, false, false, "Who is the zombie today?", 1, null },
+                    { 2, new DateTime(2022, 9, 9, 11, 23, 54, 602, DateTimeKind.Local).AddTicks(2913), 1, true, false, "Hello", 1, 4 }
                 });
 
             migrationBuilder.InsertData(
                 table: "Kill",
                 columns: new[] { "KillId", "GameId", "KillerId", "Lat", "Lng", "Story", "TimeOfDeath", "VictimId" },
-                values: new object[] { 1, 1, 1, -24.66206, 15.213158, "IDK", new DateTime(2022, 10, 30, 14, 32, 21, 0, DateTimeKind.Unspecified), 2 });
+                values: new object[] { 1, 1, 1, -24.66206, 15.213158, "The zombie tagged the Human when she was eating", new DateTime(2022, 10, 30, 14, 32, 21, 0, DateTimeKind.Unspecified), 2 });
 
             migrationBuilder.InsertData(
                 table: "SquadMember",
@@ -331,17 +332,17 @@ namespace HumansVsZombies_Backend.Migrations
             migrationBuilder.InsertData(
                 table: "SquadCheckin",
                 columns: new[] { "SquadCheckinId", "EndTime", "GameId", "Lat", "Lng", "SquadId", "SquadMemberId", "StartTime" },
-                values: new object[] { 2, new DateTime(2022, 9, 9, 11, 13, 31, 625, DateTimeKind.Local).AddTicks(9175), 2, -26.66386, 25.283757999999999, 2, 2, new DateTime(2022, 9, 9, 11, 3, 31, 625, DateTimeKind.Local).AddTicks(9168) });
+                values: new object[] { 2, new DateTime(2022, 9, 9, 11, 33, 54, 601, DateTimeKind.Local).AddTicks(5487), 2, -26.66386, 25.283757999999999, 2, 2, new DateTime(2022, 9, 9, 11, 23, 54, 601, DateTimeKind.Local).AddTicks(5478) });
 
             migrationBuilder.InsertData(
                 table: "SquadCheckin",
                 columns: new[] { "SquadCheckinId", "EndTime", "GameId", "Lat", "Lng", "SquadId", "SquadMemberId", "StartTime" },
-                values: new object[] { 3, new DateTime(2022, 9, 9, 11, 13, 31, 625, DateTimeKind.Local).AddTicks(9182), 2, -26.66386, 25.283757999999999, 2, 2, new DateTime(2022, 9, 9, 11, 3, 31, 625, DateTimeKind.Local).AddTicks(9180) });
+                values: new object[] { 3, new DateTime(2022, 9, 9, 11, 33, 54, 601, DateTimeKind.Local).AddTicks(5492), 2, -26.66386, 25.283757999999999, 2, 2, new DateTime(2022, 9, 9, 11, 23, 54, 601, DateTimeKind.Local).AddTicks(5490) });
 
             migrationBuilder.InsertData(
                 table: "SquadCheckin",
                 columns: new[] { "SquadCheckinId", "EndTime", "GameId", "Lat", "Lng", "SquadId", "SquadMemberId", "StartTime" },
-                values: new object[] { 1, new DateTime(2022, 9, 9, 11, 13, 31, 625, DateTimeKind.Local).AddTicks(8181), 1, -26.66386, 25.283757999999999, 1, 1, new DateTime(2022, 9, 9, 11, 3, 31, 623, DateTimeKind.Local).AddTicks(4737) });
+                values: new object[] { 1, new DateTime(2022, 9, 9, 11, 33, 54, 601, DateTimeKind.Local).AddTicks(4465), 1, -26.66386, 25.283757999999999, 1, 1, new DateTime(2022, 9, 9, 11, 23, 54, 599, DateTimeKind.Local).AddTicks(3024) });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Chat_GameId",

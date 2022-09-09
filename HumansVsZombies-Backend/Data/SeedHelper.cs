@@ -17,6 +17,7 @@ namespace HumansVsZombies_Backend.Data
                     GameId = 1,
                     GameName = "Left for Dead",
                     GameState = "Registration",
+                    Description = "Intresting game",
                     NwLat = -26.663860,
                     NwLng = 25.283758,
                     SeLat =-16.666860,
@@ -27,6 +28,7 @@ namespace HumansVsZombies_Backend.Data
                     GameId = 2,
                     GameName = "Walking Dead",
                     GameState = "In progress",
+                    Description = "Absorbing game",
                     NwLat = -16.663860,
                     NwLng = 15.283758,
                     SeLat =-6.666860,
@@ -37,6 +39,7 @@ namespace HumansVsZombies_Backend.Data
                     GameId = 3,
                     GameName = "Days Gone",
                     GameState = "Complete",
+                    Description = "Fascinating game",
                     NwLat = -20.263860,
                     NwLng = 21.283358,
                     SeLat =-13.666860,
@@ -287,7 +290,7 @@ namespace HumansVsZombies_Backend.Data
                 new Chat
                 {
                     ChatId = 1,
-                    Message = "glhf",
+                    Message = "Who is the zombie today?",
                     IsHumanGlobal = false,
                     IsZombieGlobal = false,
                     ChatTime = DateTime.Now,
@@ -297,7 +300,7 @@ namespace HumansVsZombies_Backend.Data
                 new Chat
                 {
                     ChatId = 2,
-                    Message = "gg",
+                    Message = "Hello",
                     IsHumanGlobal = true,
                     IsZombieGlobal = false,
                     ChatTime = DateTime.Now,
@@ -317,7 +320,7 @@ namespace HumansVsZombies_Backend.Data
                 {
                    KillId = 1,
                    TimeOfDeath = new DateTime(2022, 10, 30, 14, 32, 21),
-                   Story = "IDK",
+                   Story = "The zombie tagged the Human when she was eating",
                    Lat = -24.662060,
                    Lng = 15.213158,
                    GameId = 1,
