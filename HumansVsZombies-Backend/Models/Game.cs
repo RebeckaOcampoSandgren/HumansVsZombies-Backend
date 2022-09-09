@@ -15,6 +15,7 @@ namespace HumansVsZombies_Backend.Models
         public string GameName { get; set; }
         [Required]
         public string GameState { get; set; }
+        public string Description { get; set; }
         public double? NwLat { get; set; }
         public double? NwLng { get; set; }
         public double? SeLat { get; set; }
@@ -22,6 +23,7 @@ namespace HumansVsZombies_Backend.Models
         //relationships one to many
         public virtual ICollection<Player> Players { get; set; }
         public virtual ICollection<Chat> Chats { get; set; }
+        public virtual ICollection<Kill> Kills { get; set; }
         public virtual ICollection<Squad> Squads { get; set; }
         public virtual ICollection<Mission> Missions { get; set; }
     }

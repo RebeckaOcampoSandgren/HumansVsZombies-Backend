@@ -14,7 +14,7 @@ using AutoMapper;
 
 namespace HumansVsZombies_Backend.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/missions")]
     [ApiController]
     [Produces(MediaTypeNames.Application.Json)]
     [Consumes(MediaTypeNames.Application.Json)]
@@ -30,14 +30,21 @@ namespace HumansVsZombies_Backend.Controllers
             _mapper = mapper;
         }
 
-        // GET: api/Missions
+        /// <summary>
+        /// Get all missions
+        /// </summary>
+        /// <returns> A list of missions </returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<MissionReadDTO>>> GetAllMissions()
         {
             return _mapper.Map<List<MissionReadDTO>>(await _missionService.GetAllMissionsAsync());
         }
 
-        // GET: api/Missions/5
+        /// <summary>
+        /// Get a specific mission by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns> A mission </returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<MissionReadDTO>> GetMission(int id)
         {
@@ -51,7 +58,42 @@ namespace HumansVsZombies_Backend.Controllers
             return _mapper.Map<MissionReadDTO>(mission);
         }
 
-        // PUT: api/Missions/5
+        /// <summary>
+        /// Get all missions in a specific game
+        /// </summary>
+        /// <param name="gameId"></param>
+        /// <returns> A list of missions </returns>
+        [HttpGet("{gameId}/missions")]
+        public async Task<IEnumerable<MissionReadDTO>> GetAllMissionsInGame(int gameId)
+        {
+            return _mapper.Map<List<MissionReadDTO>>(await _missionService.GetAllMissionsInGameAsync(gameId));
+        }
+
+        /// <summary>
+        /// Get a specific mission in a specific game
+        /// </summary>
+        /// <param name="gameId"></param>
+        /// <param name="missionId"></param>
+        /// <returns> A mission </returns>
+        [HttpGet("{gameId}/{missionId}")]
+        public async Task<ActionResult<MissionReadDTO>> GetOneMissionInGame(int gameId, int missionId)
+        {
+            var mission = await _missionService.GetOneMissionInGameAsync(gameId, missionId);
+
+            if (mission == null)
+            {
+                return NotFound();
+            }
+
+            return _mapper.Map<MissionReadDTO>(mission);
+        }
+
+        /// <summary>
+        /// Update a mission
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="missionDto"></param>
+        /// <returns> Response with no content </returns>
         [HttpPut("{id}")]
         public async Task<IActionResult> PutMission(int id, MissionUpdateDTO missionDto)
         {
@@ -70,7 +112,11 @@ namespace HumansVsZombies_Backend.Controllers
             return NoContent();
         }
 
-        // POST: api/Missions
+        /// <summary>
+        /// Create a new mission
+        /// </summary>
+        /// <param name="missionDto"></param>
+        /// <returns> Created response and the created mission </returns>
         [HttpPost]
         public async Task<ActionResult<Mission>> PostMission(MissionCreateDTO missionDto)
         {
@@ -81,7 +127,11 @@ namespace HumansVsZombies_Backend.Controllers
 
         }
 
-        // DELETE: api/Missions/5
+        /// <summary>
+        /// Delete a mission
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns> Response with no content </returns>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteMission(int id)
         {
@@ -92,27 +142,6 @@ namespace HumansVsZombies_Backend.Controllers
 
             await _missionService.DeleteMissionAsync(id);
             return NoContent();
-        }
-
-        //reporting, get all missions in a game
-        [HttpGet("{gameId}/get/missions")]
-        public async Task<IEnumerable<MissionReadDTO>> GetAllMissionsInGame(int gameId)
-        {
-            return _mapper.Map<List<MissionReadDTO>>(await _missionService.GetAllMissionsInGameAsync(gameId));
-        }
-
-        //reporting
-        [HttpGet("{gameId}/get/mission")]
-        public async Task<ActionResult<MissionReadDTO>> GetOneMissionInGame(int gameId, int missionId)
-        {
-            var mission = await _missionService.GetOneMissionInGameAsync(gameId, missionId);
-
-            if (mission == null)
-            {
-                return NotFound();
-            }
-
-            return _mapper.Map<MissionReadDTO>(mission);
         }
     }
 }

@@ -14,25 +14,26 @@ using AutoMapper;
 
 namespace HumansVsZombies_Backend.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/squadMembers")]
     [ApiController]
     [Produces(MediaTypeNames.Application.Json)]
     [Consumes(MediaTypeNames.Application.Json)]
     [ApiConventionType(typeof(DefaultApiConventions))]
     public class SquadMembersController : ControllerBase
     {
-        private readonly HvZDbContext _context;
         private readonly ISquadMemberService _squadMemberService;
         private readonly IMapper _mapper;
 
-        public SquadMembersController(HvZDbContext context, IMapper mapper, ISquadMemberService squadMemberService)
+        public SquadMembersController(IMapper mapper, ISquadMemberService squadMemberService)
         {
-            _context = context;
             _squadMemberService = squadMemberService;
             _mapper = mapper;
         }
 
-        // GET: api/SquadMembers
+        /// <summary>
+        /// Get all squad members
+        /// </summary>
+        /// <returns> A list of squad members </returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<SquadMemberReadDTO>>> GetAllSquadMembers()
         {
@@ -40,7 +41,11 @@ namespace HumansVsZombies_Backend.Controllers
 
         }
 
-        // GET: api/SquadMembers/5
+        /// <summary>
+        /// Get a specific squad member by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns> A squad member </returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<SquadMemberReadDTO>> GetSquadMember(int id)
         {
@@ -54,7 +59,12 @@ namespace HumansVsZombies_Backend.Controllers
             return _mapper.Map<SquadMemberReadDTO>(squadMember);
         }
 
-        // PUT: api/SquadMembers/5
+        /// <summary>
+        /// Update a squad member
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="squadMemberDto"></param>
+        /// <returns> Response with no content </returns>
         [HttpPut("{id}")]
         public async Task<IActionResult> PutSquadMember(int id, SquadMemberUpdateDTO squadMemberDto)
         {
@@ -73,7 +83,11 @@ namespace HumansVsZombies_Backend.Controllers
             return NoContent();
         }
 
-        // POST: api/SquadMembers
+        /// <summary>
+        /// Create a new squad member
+        /// </summary>
+        /// <param name="squadMemberDto"></param>
+        /// <returns> Created response and the created squad member </returns>
         [HttpPost]
         public async Task<ActionResult<SquadMember>> PostSquadMember(SquadMemberCreateDTO squadMemberDto)
         {
@@ -83,7 +97,11 @@ namespace HumansVsZombies_Backend.Controllers
             return CreatedAtAction("GetSquadMember", new { id = domainSquadMember.SquadMemberId }, _mapper.Map<SquadMemberReadDTO>(domainSquadMember));
         }
 
-        // DELETE: api/SquadMembers/5
+        /// <summary>
+        /// Delete a squad member
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns> Response with no content </returns>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteSquadMember(int id)
         {

@@ -12,7 +12,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace HumansVsZombies_Backend
@@ -37,16 +39,34 @@ namespace HumansVsZombies_Backend
             services.AddScoped(typeof(IPlayerService), typeof(PlayerService));
             services.AddScoped(typeof(IMissionService), typeof(MissionService));
             services.AddScoped(typeof(ISquadService), typeof(SquadService));
+            services.AddScoped(typeof(IKillService), typeof(KillService));
             services.AddScoped(typeof(ISquadMemberService), typeof(SquadMemberService));
             services.AddScoped(typeof(ISquadCheckinService), typeof(SquadCheckinService));
             services.AddScoped(typeof(IUserService), typeof(UserService));
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "HumansVsZombies_Backend", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo 
+                { 
+                    Title = "HumansVsZombies_Backend", 
+                    Version = "v1",
+                    Description = "HumansVsZombies is a game where all players start as a human, and an original zombie will be randomly selected. The Original Zombie tags a human player and then a human turn into zombies. In each game there is the possibility to chat and select a squad.",
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Rebecka, Negin, Betiel & Fadi",
+                        Email = string.Empty,
+                        Url = new Uri("https://github.com/RebeckaOcampoSandgren/HumansVsZombies-Backend")
+                    }
+                });
+                //Set the comments path for the swagger JSON and UI
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
             });
 
             services.AddDbContext<HvZDbContext>(
-            opt => opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            opt => opt.UseSqlServer(Configuration.GetConnectionString("AzureDb")));
+           //services.AddDbContext<HvZDbContext>(
+           //opt => opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -63,21 +63,21 @@ namespace HumansVsZombies_Backend.Migrations
                         new
                         {
                             ChatId = 1,
-                            ChatTime = new DateTime(2022, 9, 6, 8, 34, 37, 524, DateTimeKind.Local).AddTicks(6830),
+                            ChatTime = new DateTime(2022, 9, 9, 11, 23, 54, 602, DateTimeKind.Local).AddTicks(2468),
                             GameId = 1,
                             IsHumanGlobal = false,
                             IsZombieGlobal = false,
-                            Message = "glhf",
+                            Message = "Who is the zombie today?",
                             PlayerId = 1
                         },
                         new
                         {
                             ChatId = 2,
-                            ChatTime = new DateTime(2022, 9, 6, 8, 34, 37, 524, DateTimeKind.Local).AddTicks(7308),
+                            ChatTime = new DateTime(2022, 9, 9, 11, 23, 54, 602, DateTimeKind.Local).AddTicks(2913),
                             GameId = 1,
                             IsHumanGlobal = true,
                             IsZombieGlobal = false,
-                            Message = "gg",
+                            Message = "Hello",
                             PlayerId = 1,
                             SquadId = 4
                         });
@@ -89,6 +89,9 @@ namespace HumansVsZombies_Backend.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("GameName")
                         .IsRequired()
@@ -119,6 +122,7 @@ namespace HumansVsZombies_Backend.Migrations
                         new
                         {
                             GameId = 1,
+                            Description = "Intresting game",
                             GameName = "Left for Dead",
                             GameState = "Registration",
                             NwLat = -26.66386,
@@ -129,6 +133,7 @@ namespace HumansVsZombies_Backend.Migrations
                         new
                         {
                             GameId = 2,
+                            Description = "Absorbing game",
                             GameName = "Walking Dead",
                             GameState = "In progress",
                             NwLat = -16.66386,
@@ -139,12 +144,66 @@ namespace HumansVsZombies_Backend.Migrations
                         new
                         {
                             GameId = 3,
+                            Description = "Fascinating game",
                             GameName = "Days Gone",
                             GameState = "Complete",
                             NwLat = -20.263860000000001,
                             NwLng = 21.283358,
                             SeLat = -13.66686,
                             SeLng = 12.99686
+                        });
+                });
+
+            modelBuilder.Entity("HumansVsZombies_Backend.Models.Kill", b =>
+                {
+                    b.Property<int>("KillId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("GameId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("KillerId")
+                        .HasColumnType("int");
+
+                    b.Property<double?>("Lat")
+                        .HasColumnType("float");
+
+                    b.Property<double?>("Lng")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Story")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("TimeOfDeath")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("VictimId")
+                        .HasColumnType("int");
+
+                    b.HasKey("KillId");
+
+                    b.HasIndex("GameId");
+
+                    b.HasIndex("KillerId");
+
+                    b.HasIndex("VictimId")
+                        .IsUnique();
+
+                    b.ToTable("Kill");
+
+                    b.HasData(
+                        new
+                        {
+                            KillId = 1,
+                            GameId = 1,
+                            KillerId = 1,
+                            Lat = -24.66206,
+                            Lng = 15.213158,
+                            Story = "The zombie tagged the Human when she was eating",
+                            TimeOfDeath = new DateTime(2022, 10, 30, 14, 32, 21, 0, DateTimeKind.Unspecified),
+                            VictimId = 2
                         });
                 });
 
@@ -254,7 +313,7 @@ namespace HumansVsZombies_Backend.Migrations
                         new
                         {
                             PlayerId = 1,
-                            BiteCode = 20861,
+                            BiteCode = 20527,
                             GameId = 1,
                             IsHuman = true,
                             IsPatientZero = false,
@@ -263,7 +322,7 @@ namespace HumansVsZombies_Backend.Migrations
                         new
                         {
                             PlayerId = 2,
-                            BiteCode = 12139,
+                            BiteCode = 24544,
                             GameId = 1,
                             IsHuman = false,
                             IsPatientZero = true,
@@ -272,7 +331,7 @@ namespace HumansVsZombies_Backend.Migrations
                         new
                         {
                             PlayerId = 3,
-                            BiteCode = 22135,
+                            BiteCode = 12611,
                             GameId = 2,
                             IsHuman = false,
                             IsPatientZero = false,
@@ -281,7 +340,7 @@ namespace HumansVsZombies_Backend.Migrations
                         new
                         {
                             PlayerId = 4,
-                            BiteCode = 13224,
+                            BiteCode = 18425,
                             GameId = 3,
                             IsHuman = true,
                             IsPatientZero = false,
@@ -386,35 +445,35 @@ namespace HumansVsZombies_Backend.Migrations
                         new
                         {
                             SquadCheckinId = 1,
-                            EndTime = new DateTime(2022, 9, 6, 8, 44, 37, 523, DateTimeKind.Local).AddTicks(8245),
+                            EndTime = new DateTime(2022, 9, 9, 11, 33, 54, 601, DateTimeKind.Local).AddTicks(4465),
                             GameId = 1,
                             Lat = -26.66386,
                             Lng = 25.283757999999999,
                             SquadId = 1,
                             SquadMemberId = 1,
-                            StartTime = new DateTime(2022, 9, 6, 8, 34, 37, 519, DateTimeKind.Local).AddTicks(3797)
+                            StartTime = new DateTime(2022, 9, 9, 11, 23, 54, 599, DateTimeKind.Local).AddTicks(3024)
                         },
                         new
                         {
                             SquadCheckinId = 2,
-                            EndTime = new DateTime(2022, 9, 6, 8, 44, 37, 523, DateTimeKind.Local).AddTicks(9282),
+                            EndTime = new DateTime(2022, 9, 9, 11, 33, 54, 601, DateTimeKind.Local).AddTicks(5487),
                             GameId = 2,
                             Lat = -26.66386,
                             Lng = 25.283757999999999,
                             SquadId = 2,
                             SquadMemberId = 2,
-                            StartTime = new DateTime(2022, 9, 6, 8, 34, 37, 523, DateTimeKind.Local).AddTicks(9274)
+                            StartTime = new DateTime(2022, 9, 9, 11, 23, 54, 601, DateTimeKind.Local).AddTicks(5478)
                         },
                         new
                         {
                             SquadCheckinId = 3,
-                            EndTime = new DateTime(2022, 9, 6, 8, 44, 37, 523, DateTimeKind.Local).AddTicks(9288),
+                            EndTime = new DateTime(2022, 9, 9, 11, 33, 54, 601, DateTimeKind.Local).AddTicks(5492),
                             GameId = 2,
                             Lat = -26.66386,
                             Lng = 25.283757999999999,
                             SquadId = 2,
                             SquadMemberId = 2,
-                            StartTime = new DateTime(2022, 9, 6, 8, 34, 37, 523, DateTimeKind.Local).AddTicks(9286)
+                            StartTime = new DateTime(2022, 9, 9, 11, 23, 54, 601, DateTimeKind.Local).AddTicks(5490)
                         });
                 });
 
@@ -555,6 +614,33 @@ namespace HumansVsZombies_Backend.Migrations
                     b.Navigation("Squad");
                 });
 
+            modelBuilder.Entity("HumansVsZombies_Backend.Models.Kill", b =>
+                {
+                    b.HasOne("HumansVsZombies_Backend.Models.Game", "Game")
+                        .WithMany("Kills")
+                        .HasForeignKey("GameId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("HumansVsZombies_Backend.Models.Player", "Killer")
+                        .WithMany("Kills")
+                        .HasForeignKey("KillerId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("HumansVsZombies_Backend.Models.Player", "Victim")
+                        .WithOne("Kill")
+                        .HasForeignKey("HumansVsZombies_Backend.Models.Kill", "VictimId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Game");
+
+                    b.Navigation("Killer");
+
+                    b.Navigation("Victim");
+                });
+
             modelBuilder.Entity("HumansVsZombies_Backend.Models.Mission", b =>
                 {
                     b.HasOne("HumansVsZombies_Backend.Models.Game", "Game")
@@ -646,6 +732,8 @@ namespace HumansVsZombies_Backend.Migrations
                 {
                     b.Navigation("Chats");
 
+                    b.Navigation("Kills");
+
                     b.Navigation("Missions");
 
                     b.Navigation("Players");
@@ -656,6 +744,10 @@ namespace HumansVsZombies_Backend.Migrations
             modelBuilder.Entity("HumansVsZombies_Backend.Models.Player", b =>
                 {
                     b.Navigation("Chats");
+
+                    b.Navigation("Kill");
+
+                    b.Navigation("Kills");
 
                     b.Navigation("SquadMember");
                 });

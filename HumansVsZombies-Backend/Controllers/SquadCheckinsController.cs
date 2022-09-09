@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -14,25 +13,26 @@ using AutoMapper;
 
 namespace HumansVsZombies_Backend.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/squadCheckins")]
     [ApiController]
     [Produces(MediaTypeNames.Application.Json)]
     [Consumes(MediaTypeNames.Application.Json)]
     [ApiConventionType(typeof(DefaultApiConventions))]
     public class SquadCheckinsController : ControllerBase
     {
-        private readonly HvZDbContext _context;
         private readonly ISquadCheckinService _squadCheckinService;
         private readonly IMapper _mapper;
 
-        public SquadCheckinsController(HvZDbContext context, IMapper mapper, ISquadCheckinService squadCheckinService)
+        public SquadCheckinsController(IMapper mapper, ISquadCheckinService squadCheckinService)
         {
-            _context = context;
             _squadCheckinService = squadCheckinService;
             _mapper = mapper;
         }
 
-        // GET: api/SquadCheckins
+        /// <summary>
+        /// Get all squad checkins
+        /// </summary>
+        /// <returns> A list of checkins </returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<SquadCheckinReadDTO>>> GetAllSquadCheckins()
         {
@@ -40,7 +40,11 @@ namespace HumansVsZombies_Backend.Controllers
 
         }
 
-        // GET: api/SquadCheckins/5
+        /// <summary>
+        /// Get a specific squad checkin by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns> A checkin </returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<SquadCheckinReadDTO>> GetSquadCheckin(int id)
         {
@@ -54,7 +58,12 @@ namespace HumansVsZombies_Backend.Controllers
             return _mapper.Map<SquadCheckinReadDTO>(squadCheckin);
         }
 
-        // PUT: api/SquadCheckins/5
+        /// <summary>
+        /// Update a squad checkin
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="squadCheckinDto"></param>
+        /// <returns> Response with no content </returns>
         [HttpPut("{id}")]
         public async Task<IActionResult> PutSquadCheckin(int id, SquadCheckinUpdateDTO squadCheckinDto)
         {
@@ -73,7 +82,11 @@ namespace HumansVsZombies_Backend.Controllers
             return NoContent();
         }
 
-        // POST: api/SquadCheckins
+        /// <summary>
+        /// Create a squad checkin
+        /// </summary>
+        /// <param name="squadCheckinDto"></param>
+        /// <returns> Created response and the created squad checkin </returns>
         [HttpPost]
         public async Task<ActionResult<SquadCheckin>> PostSquadCheckin(SquadCheckinCreateDTO squadCheckinDto)
         {
@@ -83,7 +96,11 @@ namespace HumansVsZombies_Backend.Controllers
             return CreatedAtAction("GetSquadCheckin", new { id = domainSquadCheckin.SquadCheckinId }, _mapper.Map<SquadCheckinReadDTO>(domainSquadCheckin));
         }
 
-        // DELETE: api/SquadCheckins/5
+        /// <summary>
+        /// Delete a squad checkin
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns> Response with no content </returns>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteSquadCheckin(int id)
         {

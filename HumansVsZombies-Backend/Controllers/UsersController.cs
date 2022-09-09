@@ -14,32 +14,37 @@ using AutoMapper;
 
 namespace HumansVsZombies_Backend.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/users")]
     [ApiController]
     [Produces(MediaTypeNames.Application.Json)]
     [Consumes(MediaTypeNames.Application.Json)]
     [ApiConventionType(typeof(DefaultApiConventions))]
     public class UsersController : ControllerBase
     {
-        private readonly HvZDbContext _context;
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
 
-        public UsersController(HvZDbContext context, IMapper mapper, IUserService userService)
+        public UsersController(IMapper mapper, IUserService userService)
         {
-            _context = context;
             _userService = userService;
             _mapper = mapper;
         }
 
-        // GET: api/Users
+        /// <summary>
+        /// Get all users
+        /// </summary>
+        /// <returns> A list of the users </returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UserReadDTO>>> GetAllUsers()
         {
             return _mapper.Map<List<UserReadDTO>>(await _userService.GetAllUsersAsync());
         }
 
-        // GET: api/Users/5
+        /// <summary>
+        /// Get a specific user by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns> A user </returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<UserReadDTO>> GetUser(int id)
         {
@@ -53,7 +58,12 @@ namespace HumansVsZombies_Backend.Controllers
             return _mapper.Map<UserReadDTO>(user);
         }
 
-        // PUT: api/Users/5
+        /// <summary>
+        /// Update a user
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="userDto"></param>
+        /// <returns> Response with no content </returns>
         [HttpPut("{id}")]
         public async Task<IActionResult> PutUser(int id, UserUpdateDTO userDto)
         {
@@ -72,7 +82,11 @@ namespace HumansVsZombies_Backend.Controllers
             return NoContent();
         }
 
-        // POST: api/Users
+        /// <summary>
+        /// Create a new user
+        /// </summary>
+        /// <param name="dtoUser"></param>
+        /// <returns> Created response and the created user </returns>
         [HttpPost]
         public async Task<ActionResult<User>> PostUser(UserCreateDTO dtoUser)
         {
@@ -82,7 +96,11 @@ namespace HumansVsZombies_Backend.Controllers
             return CreatedAtAction("GetUser", new { id = domainUser.UserId }, _mapper.Map<UserReadDTO>(domainUser));
         }
 
-        // DELETE: api/Users/5
+        /// <summary>
+        /// Delete a user
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns> Response with no content </returns>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(int id)
         {
