@@ -63,10 +63,10 @@ namespace HumansVsZombies_Backend
                 c.IncludeXmlComments(xmlPath);
             });
 
-            //services.AddDbContext<HvZDbContext>(
-            //opt => opt.UseSqlServer(Configuration.GetConnectionString("AzureDb")));
             services.AddDbContext<HvZDbContext>(
-            opt => opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            opt => opt.UseSqlServer(Configuration.GetConnectionString("AzureDb")));
+           //services.AddDbContext<HvZDbContext>(
+           //opt => opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
