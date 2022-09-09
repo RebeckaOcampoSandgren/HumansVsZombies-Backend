@@ -91,9 +91,6 @@ namespace HumansVsZombies_Backend.Controllers
         [HttpPost]
         public async Task<ActionResult<Kill>> PostKill(KillCreateDTO killDto)
         {
-            if(killDto.BiteCode != killDto.)
-            { 
-            }
             Kill domainKill = _mapper.Map<Kill>(killDto);
             domainKill = await _killService.AddKillAsync(domainKill);
 
