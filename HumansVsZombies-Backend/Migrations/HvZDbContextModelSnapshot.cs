@@ -63,21 +63,21 @@ namespace HumansVsZombies_Backend.Migrations
                         new
                         {
                             ChatId = 1,
-                            ChatTime = new DateTime(2022, 9, 9, 11, 3, 31, 626, DateTimeKind.Local).AddTicks(6182),
+                            ChatTime = new DateTime(2022, 9, 9, 11, 23, 54, 602, DateTimeKind.Local).AddTicks(2468),
                             GameId = 1,
                             IsHumanGlobal = false,
                             IsZombieGlobal = false,
-                            Message = "glhf",
+                            Message = "Who is the zombie today?",
                             PlayerId = 1
                         },
                         new
                         {
                             ChatId = 2,
-                            ChatTime = new DateTime(2022, 9, 9, 11, 3, 31, 626, DateTimeKind.Local).AddTicks(6612),
+                            ChatTime = new DateTime(2022, 9, 9, 11, 23, 54, 602, DateTimeKind.Local).AddTicks(2913),
                             GameId = 1,
                             IsHumanGlobal = true,
                             IsZombieGlobal = false,
-                            Message = "gg",
+                            Message = "Hello",
                             PlayerId = 1,
                             SquadId = 4
                         });
@@ -89,6 +89,9 @@ namespace HumansVsZombies_Backend.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("GameName")
                         .IsRequired()
@@ -119,6 +122,7 @@ namespace HumansVsZombies_Backend.Migrations
                         new
                         {
                             GameId = 1,
+                            Description = "Intresting game",
                             GameName = "Left for Dead",
                             GameState = "Registration",
                             NwLat = -26.66386,
@@ -129,6 +133,7 @@ namespace HumansVsZombies_Backend.Migrations
                         new
                         {
                             GameId = 2,
+                            Description = "Absorbing game",
                             GameName = "Walking Dead",
                             GameState = "In progress",
                             NwLat = -16.66386,
@@ -139,6 +144,7 @@ namespace HumansVsZombies_Backend.Migrations
                         new
                         {
                             GameId = 3,
+                            Description = "Fascinating game",
                             GameName = "Days Gone",
                             GameState = "Complete",
                             NwLat = -20.263860000000001,
@@ -195,7 +201,7 @@ namespace HumansVsZombies_Backend.Migrations
                             KillerId = 1,
                             Lat = -24.66206,
                             Lng = 15.213158,
-                            Story = "IDK",
+                            Story = "The zombie tagged the Human when she was eating",
                             TimeOfDeath = new DateTime(2022, 10, 30, 14, 32, 21, 0, DateTimeKind.Unspecified),
                             VictimId = 2
                         });
@@ -307,7 +313,7 @@ namespace HumansVsZombies_Backend.Migrations
                         new
                         {
                             PlayerId = 1,
-                            BiteCode = 18635,
+                            BiteCode = 20527,
                             GameId = 1,
                             IsHuman = true,
                             IsPatientZero = false,
@@ -316,7 +322,7 @@ namespace HumansVsZombies_Backend.Migrations
                         new
                         {
                             PlayerId = 2,
-                            BiteCode = 22354,
+                            BiteCode = 24544,
                             GameId = 1,
                             IsHuman = false,
                             IsPatientZero = true,
@@ -325,7 +331,7 @@ namespace HumansVsZombies_Backend.Migrations
                         new
                         {
                             PlayerId = 3,
-                            BiteCode = 3236,
+                            BiteCode = 12611,
                             GameId = 2,
                             IsHuman = false,
                             IsPatientZero = false,
@@ -334,7 +340,7 @@ namespace HumansVsZombies_Backend.Migrations
                         new
                         {
                             PlayerId = 4,
-                            BiteCode = 8509,
+                            BiteCode = 18425,
                             GameId = 3,
                             IsHuman = true,
                             IsPatientZero = false,
@@ -439,35 +445,35 @@ namespace HumansVsZombies_Backend.Migrations
                         new
                         {
                             SquadCheckinId = 1,
-                            EndTime = new DateTime(2022, 9, 9, 11, 13, 31, 625, DateTimeKind.Local).AddTicks(8181),
+                            EndTime = new DateTime(2022, 9, 9, 11, 33, 54, 601, DateTimeKind.Local).AddTicks(4465),
                             GameId = 1,
                             Lat = -26.66386,
                             Lng = 25.283757999999999,
                             SquadId = 1,
                             SquadMemberId = 1,
-                            StartTime = new DateTime(2022, 9, 9, 11, 3, 31, 623, DateTimeKind.Local).AddTicks(4737)
+                            StartTime = new DateTime(2022, 9, 9, 11, 23, 54, 599, DateTimeKind.Local).AddTicks(3024)
                         },
                         new
                         {
                             SquadCheckinId = 2,
-                            EndTime = new DateTime(2022, 9, 9, 11, 13, 31, 625, DateTimeKind.Local).AddTicks(9175),
+                            EndTime = new DateTime(2022, 9, 9, 11, 33, 54, 601, DateTimeKind.Local).AddTicks(5487),
                             GameId = 2,
                             Lat = -26.66386,
                             Lng = 25.283757999999999,
                             SquadId = 2,
                             SquadMemberId = 2,
-                            StartTime = new DateTime(2022, 9, 9, 11, 3, 31, 625, DateTimeKind.Local).AddTicks(9168)
+                            StartTime = new DateTime(2022, 9, 9, 11, 23, 54, 601, DateTimeKind.Local).AddTicks(5478)
                         },
                         new
                         {
                             SquadCheckinId = 3,
-                            EndTime = new DateTime(2022, 9, 9, 11, 13, 31, 625, DateTimeKind.Local).AddTicks(9182),
+                            EndTime = new DateTime(2022, 9, 9, 11, 33, 54, 601, DateTimeKind.Local).AddTicks(5492),
                             GameId = 2,
                             Lat = -26.66386,
                             Lng = 25.283757999999999,
                             SquadId = 2,
                             SquadMemberId = 2,
-                            StartTime = new DateTime(2022, 9, 9, 11, 3, 31, 625, DateTimeKind.Local).AddTicks(9180)
+                            StartTime = new DateTime(2022, 9, 9, 11, 23, 54, 601, DateTimeKind.Local).AddTicks(5490)
                         });
                 });
 

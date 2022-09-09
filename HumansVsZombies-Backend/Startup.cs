@@ -49,7 +49,7 @@ namespace HumansVsZombies_Backend
                 { 
                     Title = "HumansVsZombies_Backend", 
                     Version = "v1",
-                    Description = "HumansVsZombies is a game where all players start as a human, and an original zombie will be randomly selected. The Original Zombie attacks human players and then humans turn into zombies. In each game there is the possibility to chat and select a squad.",
+                    Description = "HumansVsZombies is a game where all players start as a human, and an original zombie will be randomly selected. The Original Zombie tags a human player and then a human turn into zombies. In each game there is the possibility to chat and select a squad.",
                     Contact = new OpenApiContact
                     {
                         Name = "Rebecka, Negin, Betiel & Fadi",
