@@ -65,7 +65,7 @@ namespace HumansVsZombies_Backend
 
             services.AddDbContext<HvZDbContext>(
             opt => opt.UseSqlServer(Configuration.GetConnectionString("AzureDb")));
-           //services.AddDbContext<HvZDbContext>(
+            //services.AddDbContext<HvZDbContext>(
            //opt => opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
         }
 
