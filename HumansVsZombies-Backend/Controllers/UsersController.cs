@@ -10,6 +10,9 @@ using HumansVsZombies_Backend.Models;
 using System.Net.Mime;
 using HumansVsZombies_Backend.DTOs.UserDTO;
 using HumansVsZombies_Backend.Services;
+using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 
 namespace HumansVsZombies_Backend.Controllers
@@ -21,13 +24,15 @@ namespace HumansVsZombies_Backend.Controllers
     [ApiConventionType(typeof(DefaultApiConventions))]
     public class UsersController : ControllerBase
     {
+        private readonly ILogger<UsersController> _logger;
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
 
-        public UsersController(IMapper mapper, IUserService userService)
+        public UsersController(IMapper mapper, IUserService userService, ILogger<UsersController> logger)
         {
             _userService = userService;
             _mapper = mapper;
+            _logger = logger;
         }
 
         /// <summary>
@@ -87,6 +92,7 @@ namespace HumansVsZombies_Backend.Controllers
         /// </summary>
         /// <param name="dtoUser"></param>
         /// <returns> Created response and the created user </returns>
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult<User>> PostUser(UserCreateDTO dtoUser)
         {
