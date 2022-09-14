@@ -51,7 +51,7 @@ namespace HumansVsZombies_Backend.Controllers
         /// <param name="id"></param>
         /// <returns> A user </returns>
         [HttpGet("{id}")]
-        public async Task<ActionResult<UserReadDTO>> GetUser(int id)
+        public async Task<ActionResult<UserReadDTO>> GetUser(string id)
         {
             var user = await _userService.GetUserAsync(id);
 
@@ -70,7 +70,7 @@ namespace HumansVsZombies_Backend.Controllers
         /// <param name="userDto"></param>
         /// <returns> Response with no content </returns>
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser(int id, UserUpdateDTO userDto)
+        public async Task<IActionResult> PutUser(string id, UserUpdateDTO userDto)
         {
             if (id != userDto.UserId)
             {
@@ -92,7 +92,6 @@ namespace HumansVsZombies_Backend.Controllers
         /// </summary>
         /// <param name="dtoUser"></param>
         /// <returns> Created response and the created user </returns>
-        [Authorize]
         [HttpPost]
         public async Task<ActionResult<User>> PostUser(UserCreateDTO dtoUser)
         {
@@ -108,7 +107,7 @@ namespace HumansVsZombies_Backend.Controllers
         /// <param name="id"></param>
         /// <returns> Response with no content </returns>
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUser(int id)
+        public async Task<IActionResult> DeleteUser(string id)
         {
             if (!_userService.UserExists(id))
             {

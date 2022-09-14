@@ -17,9 +17,8 @@ namespace HumansVsZombies_Backend.Models
         [Required]
         [MaxLength(50, ErrorMessage = "The name is too long")]
         public string LastName { get; set; }
-        public bool IsAdmin { get; set; }
+        public bool? IsAdmin { get; set; }
         //Relationship 
         public virtual ICollection<Player> Players { get; set; }
-
     }
 }
