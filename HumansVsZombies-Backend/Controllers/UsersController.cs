@@ -10,6 +10,9 @@ using HumansVsZombies_Backend.Models;
 using System.Net.Mime;
 using HumansVsZombies_Backend.DTOs.UserDTO;
 using HumansVsZombies_Backend.Services;
+using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 
 namespace HumansVsZombies_Backend.Controllers
@@ -21,13 +24,15 @@ namespace HumansVsZombies_Backend.Controllers
     [ApiConventionType(typeof(DefaultApiConventions))]
     public class UsersController : ControllerBase
     {
+        private readonly ILogger<UsersController> _logger;
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
 
-        public UsersController(IMapper mapper, IUserService userService)
+        public UsersController(IMapper mapper, IUserService userService, ILogger<UsersController> logger)
         {
             _userService = userService;
             _mapper = mapper;
+            _logger = logger;
         }
 
         /// <summary>
@@ -46,7 +51,7 @@ namespace HumansVsZombies_Backend.Controllers
         /// <param name="id"></param>
         /// <returns> A user </returns>
         [HttpGet("{id}")]
-        public async Task<ActionResult<UserReadDTO>> GetUser(int id)
+        public async Task<ActionResult<UserReadDTO>> GetUser(string id)
         {
             var user = await _userService.GetUserAsync(id);
 
@@ -65,7 +70,7 @@ namespace HumansVsZombies_Backend.Controllers
         /// <param name="userDto"></param>
         /// <returns> Response with no content </returns>
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser(int id, UserUpdateDTO userDto)
+        public async Task<IActionResult> PutUser(string id, UserUpdateDTO userDto)
         {
             if (id != userDto.UserId)
             {
@@ -102,7 +107,7 @@ namespace HumansVsZombies_Backend.Controllers
         /// <param name="id"></param>
         /// <returns> Response with no content </returns>
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUser(int id)
+        public async Task<IActionResult> DeleteUser(string id)
         {
             if (!_userService.UserExists(id))
             {

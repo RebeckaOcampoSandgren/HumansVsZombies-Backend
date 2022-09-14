@@ -12,7 +12,7 @@ namespace HumansVsZombies_Backend.DTOs.PlayerDTO
         public bool IsPatientZero { get; set; }
         public int BiteCode { get; set; }
         public int Game { get; set; }
-        public int User { get; set; }
+        public string User { get; set; }
         public int SquadMember { get; set; }
         public List<int> Chats { get; set; }
         public List<int> Kills { get; set; }

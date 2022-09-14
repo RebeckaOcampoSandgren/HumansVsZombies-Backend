@@ -1,5 +1,6 @@
 using HumansVsZombies_Backend.Data;
 using HumansVsZombies_Backend.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -9,11 +10,14 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Reflection;
 using System.Threading.Tasks;
 
@@ -31,6 +35,34 @@ namespace HumansVsZombies_Backend
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+           .AddJwtBearer(options =>
+           {
+               options.TokenValidationParameters = new TokenValidationParameters
+               {
+                 
+                   IssuerSigningKeyResolver = (token, securityToken, kid, parameters) =>
+                   {
+                       var client = new HttpClient();
+                       var keyuri = Configuration["TokenSecrets:KeyURI"];
+                       //Retrieves the keys from keycloak instance to verify token
+                       var response = client.GetAsync(keyuri).Result;
+                       var responseString = response.Content.ReadAsStringAsync().Result;
+                       var keys = JsonConvert.DeserializeObject<JsonWebKeySet>(responseString);
+                       return keys.Keys;
+                   },
+
+                   ValidIssuers = new List<string>
+                   {
+                        Configuration["TokenSecrets:IssuerURI"]
+                   },
+
+                   //This checks the token for a the 'aud' claim value
+                   ValidAudience = "account",
+               };
+           });
+
+
 
             services.AddControllers();
             services.AddAutoMapper(typeof(Startup));
@@ -63,10 +95,10 @@ namespace HumansVsZombies_Backend
                 c.IncludeXmlComments(xmlPath);
             });
 
-            services.AddDbContext<HvZDbContext>(
-            opt => opt.UseSqlServer(Configuration.GetConnectionString("AzureDb")));
             //services.AddDbContext<HvZDbContext>(
-           //opt => opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            //opt => opt.UseSqlServer(Configuration.GetConnectionString("AzureDb")));
+            services.AddDbContext<HvZDbContext>(
+           opt => opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -82,6 +114,8 @@ namespace HumansVsZombies_Backend
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
