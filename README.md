@@ -36,7 +36,7 @@ To create the database, open Package Manager Console in Visual Studio an run:
 Run program with button with the *green arrow and IIS Express*
 
 ## Visuals
-![ER-Diagram-HvZ-Database](/Diagram/ER-Diagram-HvZ-Database.png)
+![ER-Diagram-HvZ-Database](HumansVsZombies-Backend/Diagram/ER-Diagram-HvZ-Database.png)
 ER Diagram for the Humen vs. Zombies database.
 
 ## Contributors
