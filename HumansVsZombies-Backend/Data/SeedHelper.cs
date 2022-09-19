@@ -56,28 +56,28 @@ namespace HumansVsZombies_Backend.Data
             {
                 new User
                 {
-                    UserId = 1,
+                    UserId = "c208f8b8-22bb-464c-93c9-0e011f4d827f",
                     FirstName = "Rebecka",
                     LastName = "Ocampo Sandgren",
                     IsAdmin = false
                 },
                 new User
                 {
-                    UserId = 2,
+                    UserId = "c151a086-fe63-41ed-9fa0-1dcb43f7a556",
                     FirstName = "Fadi",
                     LastName = "Akkaoui",
                     IsAdmin = true
                 },
                 new User
                 {
-                    UserId = 3,
+                    UserId = "3885542f-5e69-4493-aef8-69a55ec152a3",
                     FirstName = "Negin",
                     LastName = "Bakhtiarirad",
-                    IsAdmin = true
+                    IsAdmin = false
                 },
                 new User
                 {
-                    UserId = 4,
+                    UserId = "c8f391c6-2257-4ed0-bef2-f275bff089d2",
                     FirstName = "Betiel",
                     LastName = "Yohannes",
                     IsAdmin = false
@@ -97,7 +97,7 @@ namespace HumansVsZombies_Backend.Data
                     IsHuman = true,
                     IsPatientZero = false,
                     BiteCode = rnd.Next(1, 25000),
-                    UserId = 1,
+                    UserId = "c208f8b8-22bb-464c-93c9-0e011f4d827f",
                     GameId = 1
                 },
                 new Player
@@ -106,7 +106,7 @@ namespace HumansVsZombies_Backend.Data
                     IsHuman = false,
                     IsPatientZero = true,
                     BiteCode = rnd.Next(1, 25000),
-                    UserId = 2,
+                    UserId = "c151a086-fe63-41ed-9fa0-1dcb43f7a556",
                     GameId = 1
                 },
                 new Player
@@ -115,7 +115,7 @@ namespace HumansVsZombies_Backend.Data
                     IsHuman = false,
                     IsPatientZero = false,
                     BiteCode = rnd.Next(1, 25000),
-                    UserId = 3,
+                    UserId = "3885542f-5e69-4493-aef8-69a55ec152a3",
                     GameId = 2
                 },
                 new Player
@@ -124,7 +124,7 @@ namespace HumansVsZombies_Backend.Data
                     IsHuman = true,
                     IsPatientZero = false,
                     BiteCode = rnd.Next(1, 25000),
-                    UserId = 4,
+                    UserId = "c8f391c6-2257-4ed0-bef2-f275bff089d2",
                     GameId = 3
                 }
 

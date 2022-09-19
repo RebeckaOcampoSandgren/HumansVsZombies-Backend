@@ -20,7 +20,7 @@ namespace HumansVsZombies_Backend.Models
         //Not sure about the relationship
         public int GameId { get; set; }
         public Game Game { get; set; }
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         public User User { get; set; }
         public SquadMember SquadMember { get; set; }
         public virtual ICollection<Chat> Chats { get; set; }

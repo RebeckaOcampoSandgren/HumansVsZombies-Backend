@@ -63,7 +63,7 @@ namespace HumansVsZombies_Backend.Migrations
                         new
                         {
                             ChatId = 1,
-                            ChatTime = new DateTime(2022, 9, 9, 11, 23, 54, 602, DateTimeKind.Local).AddTicks(2468),
+                            ChatTime = new DateTime(2022, 9, 15, 8, 10, 46, 68, DateTimeKind.Local).AddTicks(6533),
                             GameId = 1,
                             IsHumanGlobal = false,
                             IsZombieGlobal = false,
@@ -73,7 +73,7 @@ namespace HumansVsZombies_Backend.Migrations
                         new
                         {
                             ChatId = 2,
-                            ChatTime = new DateTime(2022, 9, 9, 11, 23, 54, 602, DateTimeKind.Local).AddTicks(2913),
+                            ChatTime = new DateTime(2022, 9, 15, 8, 10, 46, 68, DateTimeKind.Local).AddTicks(7004),
                             GameId = 1,
                             IsHumanGlobal = true,
                             IsZombieGlobal = false,
@@ -298,8 +298,8 @@ namespace HumansVsZombies_Backend.Migrations
                     b.Property<bool>("IsPatientZero")
                         .HasColumnType("bit");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("PlayerId");
 
@@ -313,38 +313,38 @@ namespace HumansVsZombies_Backend.Migrations
                         new
                         {
                             PlayerId = 1,
-                            BiteCode = 20527,
+                            BiteCode = 23234,
                             GameId = 1,
                             IsHuman = true,
                             IsPatientZero = false,
-                            UserId = 1
+                            UserId = "c208f8b8-22bb-464c-93c9-0e011f4d827f"
                         },
                         new
                         {
                             PlayerId = 2,
-                            BiteCode = 24544,
+                            BiteCode = 17154,
                             GameId = 1,
                             IsHuman = false,
                             IsPatientZero = true,
-                            UserId = 2
+                            UserId = "c151a086-fe63-41ed-9fa0-1dcb43f7a556"
                         },
                         new
                         {
                             PlayerId = 3,
-                            BiteCode = 12611,
+                            BiteCode = 10911,
                             GameId = 2,
                             IsHuman = false,
                             IsPatientZero = false,
-                            UserId = 3
+                            UserId = "3885542f-5e69-4493-aef8-69a55ec152a3"
                         },
                         new
                         {
                             PlayerId = 4,
-                            BiteCode = 18425,
+                            BiteCode = 18737,
                             GameId = 3,
                             IsHuman = true,
                             IsPatientZero = false,
-                            UserId = 4
+                            UserId = "c8f391c6-2257-4ed0-bef2-f275bff089d2"
                         });
                 });
 
@@ -445,35 +445,35 @@ namespace HumansVsZombies_Backend.Migrations
                         new
                         {
                             SquadCheckinId = 1,
-                            EndTime = new DateTime(2022, 9, 9, 11, 33, 54, 601, DateTimeKind.Local).AddTicks(4465),
+                            EndTime = new DateTime(2022, 9, 15, 8, 20, 46, 67, DateTimeKind.Local).AddTicks(6908),
                             GameId = 1,
                             Lat = -26.66386,
                             Lng = 25.283757999999999,
                             SquadId = 1,
                             SquadMemberId = 1,
-                            StartTime = new DateTime(2022, 9, 9, 11, 23, 54, 599, DateTimeKind.Local).AddTicks(3024)
+                            StartTime = new DateTime(2022, 9, 15, 8, 10, 46, 65, DateTimeKind.Local).AddTicks(1723)
                         },
                         new
                         {
                             SquadCheckinId = 2,
-                            EndTime = new DateTime(2022, 9, 9, 11, 33, 54, 601, DateTimeKind.Local).AddTicks(5487),
+                            EndTime = new DateTime(2022, 9, 15, 8, 20, 46, 67, DateTimeKind.Local).AddTicks(8029),
                             GameId = 2,
                             Lat = -26.66386,
                             Lng = 25.283757999999999,
                             SquadId = 2,
                             SquadMemberId = 2,
-                            StartTime = new DateTime(2022, 9, 9, 11, 23, 54, 601, DateTimeKind.Local).AddTicks(5478)
+                            StartTime = new DateTime(2022, 9, 15, 8, 10, 46, 67, DateTimeKind.Local).AddTicks(8021)
                         },
                         new
                         {
                             SquadCheckinId = 3,
-                            EndTime = new DateTime(2022, 9, 9, 11, 33, 54, 601, DateTimeKind.Local).AddTicks(5492),
+                            EndTime = new DateTime(2022, 9, 15, 8, 20, 46, 67, DateTimeKind.Local).AddTicks(8035),
                             GameId = 2,
                             Lat = -26.66386,
                             Lng = 25.283757999999999,
                             SquadId = 2,
                             SquadMemberId = 2,
-                            StartTime = new DateTime(2022, 9, 9, 11, 23, 54, 601, DateTimeKind.Local).AddTicks(5490)
+                            StartTime = new DateTime(2022, 9, 15, 8, 10, 46, 67, DateTimeKind.Local).AddTicks(8033)
                         });
                 });
 
@@ -535,17 +535,15 @@ namespace HumansVsZombies_Backend.Migrations
 
             modelBuilder.Entity("HumansVsZombies_Backend.Models.User", b =>
                 {
-                    b.Property<int>("UserId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<bool>("IsAdmin")
+                    b.Property<bool?>("IsAdmin")
                         .HasColumnType("bit");
 
                     b.Property<string>("LastName")
@@ -560,28 +558,28 @@ namespace HumansVsZombies_Backend.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = 1,
+                            UserId = "c208f8b8-22bb-464c-93c9-0e011f4d827f",
                             FirstName = "Rebecka",
                             IsAdmin = false,
                             LastName = "Ocampo Sandgren"
                         },
                         new
                         {
-                            UserId = 2,
+                            UserId = "c151a086-fe63-41ed-9fa0-1dcb43f7a556",
                             FirstName = "Fadi",
                             IsAdmin = true,
                             LastName = "Akkaoui"
                         },
                         new
                         {
-                            UserId = 3,
+                            UserId = "3885542f-5e69-4493-aef8-69a55ec152a3",
                             FirstName = "Negin",
-                            IsAdmin = true,
+                            IsAdmin = false,
                             LastName = "Bakhtiarirad"
                         },
                         new
                         {
-                            UserId = 4,
+                            UserId = "c8f391c6-2257-4ed0-bef2-f275bff089d2",
                             FirstName = "Betiel",
                             IsAdmin = false,
                             LastName = "Yohannes"
@@ -662,9 +660,7 @@ namespace HumansVsZombies_Backend.Migrations
 
                     b.HasOne("HumansVsZombies_Backend.Models.User", "User")
                         .WithMany("Players")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
 
                     b.Navigation("Game");
 

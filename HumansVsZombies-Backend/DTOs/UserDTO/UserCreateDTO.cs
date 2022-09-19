@@ -7,8 +7,9 @@ namespace HumansVsZombies_Backend.DTOs.UserDTO
 {
     public class UserCreateDTO
     {
+        public string UserId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public bool IsAdmin { get; set; }
+        public bool? IsAdmin { get; set; }
     }
 }

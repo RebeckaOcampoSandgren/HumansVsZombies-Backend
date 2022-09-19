@@ -24,7 +24,7 @@ namespace HumansVsZombies_Backend.Services
             return user;
         }
 
-        public async Task DeleteUserAsync(int id)
+        public async Task DeleteUserAsync(string id)
         {
             var user = await _context.User.FindAsync(id);
             _context.User.Remove(user);
@@ -36,7 +36,7 @@ namespace HumansVsZombies_Backend.Services
             return await _context.User.Include(up => up.Players).ToListAsync();
         }
 
-        public async Task<User> GetUserAsync(int id)
+        public async Task<User> GetUserAsync(string id)
         {
             return await _context.User.Include(up => up.Players).FirstOrDefaultAsync(u => u.UserId == id);
         }
@@ -47,7 +47,7 @@ namespace HumansVsZombies_Backend.Services
             await _context.SaveChangesAsync();
         }
 
-        public bool UserExists(int id)
+        public bool UserExists(string id)
         {
             return _context.User.Any(e => e.UserId == id);
         }
