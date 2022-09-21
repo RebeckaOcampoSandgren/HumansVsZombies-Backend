@@ -55,4 +55,5 @@ The minimal Viable Product for the assignmement works.
 
 Features to add:
 * Functionality to chat in real-time
+* Functionality to get squad details 
 
